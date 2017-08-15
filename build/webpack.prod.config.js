@@ -145,7 +145,7 @@ module.exports = {
 
         // 生成html.
         new HtmlWebpackPlugin({
-            title: 'Noah',
+            title: 'Noah System',
             template: './src/template/app.html',
         }),
     ]

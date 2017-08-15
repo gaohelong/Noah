@@ -5,11 +5,11 @@ var path = require('path');
 
 /* 将css提取成单独文件 */
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-const extractGlobalSass = new ExtractTextPlugin({
-    // filename: "assets/css/global.[contenthash].css", // 输出到assets/css/目录下.
-    filename: "assets/css/[name].[contenthash].css", // 输出到assets/css/目录下.
-    // disable: process.env.NODE_ENV === "development" // true: 禁用，这是css在当前页面的<style></style>中. 如果为false: 启用，则单独生成css文件. 默认为false.
-});
+// const extractGlobalSass = new ExtractTextPlugin({
+//     // filename: "assets/css/global.[contenthash].css", // 输出到assets/css/目录下.
+//     filename: "assets/css/[name].[contenthash].css", // 输出到assets/css/目录下.
+//     // disable: process.env.NODE_ENV === "development" // true: 禁用，这是css在当前页面的<style></style>中. 如果为false: 启用，则单独生成css文件. 默认为false.
+// });
 
 const extractSass = new ExtractTextPlugin({
     // filename: "assets/css/[name].[contenthash].css", // 输出到assets/css/目录下.
@@ -94,28 +94,28 @@ module.exports = function(env) {
                 },
 
                 // main sass.
-                {
-                    test: /main\.scss$/,
-                    use: extractGlobalSass.extract({
-                        use: [
-                            {
-                                loader: "css-loader?sourceMap",
-                                // options:{
-                                //     minimize: true // css压缩
-                                // }
-                            },
-                            // {loader: "resolve-url-loader"}, // 放在此处是转换css中的路径为绝对路径.
-                            // {loader: "sass-loader"}
-                            {loader: "sass-loader?sourceMap&includePaths[]=" + path.resolve(__dirname, "../node_modules/compass-mixins/lib")}
-                        ],
-                        // 在开发环境使用 style-loader
-                        fallback: "style-loader"
-                    })
-                },
+                // {
+                //     test: /main\.scss$/,
+                //     use: extractGlobalSass.extract({
+                //         use: [
+                //             {
+                //                 loader: "css-loader?sourceMap",
+                //                 // options:{
+                //                 //     minimize: true // css压缩
+                //                 // }
+                //             },
+                //             // {loader: "resolve-url-loader"}, // 放在此处是转换css中的路径为绝对路径.
+                //             // {loader: "sass-loader"}
+                //             {loader: "sass-loader?sourceMap&includePaths[]=" + path.resolve(__dirname, "../node_modules/compass-mixins/lib")}
+                //         ],
+                //         // 在开发环境使用 style-loader
+                //         fallback: "style-loader"
+                //     })
+                // },
 
                 // sass.
                 {
-                    test: /[^main]\.scss$/,
+                    test: /\.scss$/,
                     use: extractSass.extract({
                         use: [
                             {
@@ -205,7 +205,7 @@ module.exports = function(env) {
             definePluginConfig,
 
             // 提取成单独的css文件.
-            extractGlobalSass,
+            // extractGlobalSass,
             extractSass,
             extractCss,
 
