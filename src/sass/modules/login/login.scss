@@ -3,6 +3,28 @@
 
 /* noah-login */
 .#{$prefix}-login {
-    font-size:              16px;
-    color:                  green;
+    .main {
+        position:           absolute;
+        top:                0;
+        width:              100%;
+        height:             calc(100% - 61px);
+        padding-top:        100px;
+
+        .logo {
+            text-align:             center;
+            line-height:            60px;
+            font-size:              30px;
+            color:                  $blue;
+        }
+    }
+
+    .footer {
+        position:               absolute;
+        bottom:                 0;
+        width:                  100%;
+        border-top:             1px solid #ccc;
+        line-height:            60px;
+        text-align:             center;
+        background-color:       #f5f5f5;
+    }
 }

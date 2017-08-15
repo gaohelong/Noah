@@ -10,7 +10,12 @@ class Login extends React.Component {
         const { Config } = this.props;
 
         return (
-            <div className={Config.prefixs.system + "login"}>Login</div>
+            <div className={Config.prefixs.system + "login"}>
+                <div className="main">
+                    <div className="logo">Noth System</div>
+                </div>
+                <div className="footer">©Noah System 2017</div>
+            </div>
         );
     }
 }
