@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+/* botton */
+.#{$prefix}-btn {
+    width:                  245px;
+    height:                 18px;
+    padding:                14px 20px;
+    border:                 0;
+    margin-top:             16px;
+    text-align:             center;
+    color:                  $white;
+    font-size:              14px;
+    letter-spacing:         1.6px;
+    background-color:       $login-input;
+    @include                box-sizing(content);
+}

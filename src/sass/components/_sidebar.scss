@@ -1,0 +1,35 @@
+@charset    'utf-8';
+
+/* admin sidebar */
+.#{$prefix}-sidebar {
+    position:           fixed;
+    top:                40px;
+    left:               -100px;
+    bottom:             0;
+    width:              100px;
+    min-height:         200px;
+    background-color:   rgba(#0275d8, 0.8);
+
+    a {
+        display:        block;
+        padding:        10px;
+        color:          $white;
+    }
+
+    .active {
+        background-color:           rgba($black, 0.6);
+    }
+}
+
+.#{$prefix}-sidebar-show {
+    @include animation(sidebar_show .15s linear 0s forwards);
+}
+
+@include keyframes(sidebar_show) {
+    0% {
+        left:   -100px;
+    }
+    100% {
+        left:   0;
+    }
+}
