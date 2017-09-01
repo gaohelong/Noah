@@ -17,8 +17,8 @@ import Config from '../config/config';
 import Bundle from './Bundle';
 
 /* lazy container */
-import loadLogin    from    'bundle-loader?lazy!../containers/Login';
-import loadF404     from    'bundle-loader?lazy!../containers/404/404';
+import loadLogin from 'bundle-loader?lazy!../containers/Login';
+import loadF404 from 'bundle-loader?lazy!../containers/404/404';
 
 /* layout */
 // import Layout   from    '../components/Layout/Layout';
@@ -36,7 +36,7 @@ const Login = (props) => {
             {(Login) => <Login {...props} Config={Config} />}
         </Bundle>
     );
-}; 
+};
 
 const F404 = (props) => {
     require('../sass/modules/404/404');

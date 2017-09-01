@@ -3,6 +3,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
 
+const paths = require('./paths');
+
 /* 将css提取成单独文件 */
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 // const extractGlobalSass = new ExtractTextPlugin({
@@ -33,7 +35,7 @@ var definePluginConfig = new webpack.DefinePlugin({
 
 module.exports = function(env) {
     // publicPath
-    var publicPath = (env == 'dev') ? 'http://react.noah.com/' : 'http://localhost:8001/';
+    // var publicPath = (env == 'dev') ? 'http://react.noah.com/' : 'http://localhost:8001/';
 
     /* return */
     return {
@@ -46,16 +48,18 @@ module.exports = function(env) {
         output: {
             // filename: 'bundle.js',
             filename: 'assets/js/[name].[chunkhash].js', // 输出到assets/js/目录下
-            path: path.resolve(__dirname, '../dist'), // 输出路径
+            // path: publicPath, // 输出路径
+            path: paths.DIST_PATH, // 输出路径
 
             /* 对于按需加载(on-demand-load)或加载外部资源(external resources)（如图片、文件等）来说，output.publicPath 是很重要的选项 */
             /* 如果指定了一个错误的值，则在加载这些资源时会收到 404 错误。 */
-            publicPath: publicPath // 一般都设置一个url否则去掉这项.
+            publicPath: paths.WWW_RUL // 一般都设置一个url否则去掉这项.
         },
 
         /* webpack-dev-server */
         devServer: {
-            contentBase: path.join(__dirname, "../dist"),
+            // contentBase: path.join(__dirname, "../dist"),
+            contentBase: paths.DIST_PATH,
             compress: true,
             port: 8001,
             historyApiFallback: true
@@ -86,7 +90,7 @@ module.exports = function(env) {
                                 //     minimize: true // css压缩
                                 // }
                             },
-                            {loader: 'postcss-loader'},
+                            // {loader: 'postcss-loader'},
                         ],
                         // 在开发环境使用 style-loader
                         fallback: "style-loader"
@@ -178,7 +182,10 @@ module.exports = function(env) {
                 {
                     test: /\.js$/, 
                     exclude: /node_modules/, 
-                    use: 'babel-loader'
+                    use: [
+                        {loader: 'babel-loader'},
+                        {loader: 'eslint-loader'}
+                    ]
                 },
 
                 // jsx.
@@ -187,7 +194,8 @@ module.exports = function(env) {
                     exclude: /^node_modules$/,
                     use: [
                         {loader: 'jsx-loader'}, 
-                        {loader: 'babel-loader'}
+                        {loader: 'babel-loader'},
+                        {loader: 'eslint-loader'}
                     ]
                 }
             ]

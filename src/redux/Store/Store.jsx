@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import * as reducer from '../Reducers/index';
 import thunk from 'redux-thunk';
 
-var store = createStore(
+const store = createStore(
     combineReducers(reducer),
     applyMiddleware(thunk)
 );

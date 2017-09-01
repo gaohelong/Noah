@@ -7,7 +7,7 @@ const initState = {
 
 /* export function */
 export const loginState = (state = initState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case LOGIN:
             return Object.assign({}, state, {
                 rememberMe: !state.rememberMe
