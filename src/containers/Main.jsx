@@ -1,11 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 class Main extends React.Component {
     render() {
         return (
-            <div>main</div>
+            <div>Welcome to useing Noah System.</div>
         );
     }
 }
 
-export default Main;
+const mapStateToProps = (state) => {
+    return {};
+};
+
+export default connect(mapStateToProps)(Main);

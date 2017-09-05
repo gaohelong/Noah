@@ -19,6 +19,7 @@ import Bundle from './Bundle';
 /* lazy container */
 import loadLogin from 'bundle-loader?lazy!../containers/Login';
 import loadMain from 'bundle-loader?lazy!../containers/Main';
+import loadPagination from 'bundle-loader?lazy!../containers/Pagination';
 import loadF404 from 'bundle-loader?lazy!../containers/404/404';
 
 /* layout */
@@ -47,6 +48,14 @@ const Main = (props) => {
     );
 };
 
+const Pagination = (props) => {
+    return (
+        <Bundle load={loadPagination}>
+            {(Pagination) => <Pagination {...props} />}
+        </Bundle>
+    );
+};
+
 const F404 = (props) => {
     require('../sass/modules/404/404');
 
@@ -67,8 +76,16 @@ const routerConfig = [
     },
     {
         path: '/main',
-        sel: 'Main',
+        selVal: '1',
         component: Main,
+        breadcrumb: 'Home/main',
+        type: 2
+    },
+    {
+        path: '/pagination',
+        selVal: '2',
+        component: Pagination,
+        breadcrumb: '分页管理/pagination',
         type: 2
     },
     {
@@ -83,7 +100,7 @@ const RouteCreate = (route) => {
     } else {
         return (
             <Route path={route.path} exact={route.exact} render={(props) => (
-                <Layout {...props} sel={route.sel}>
+                <Layout {...props} selVal={route.selVal} breadcrumb={route.breadcrumb}>
                     <route.component {...props} />
                 </Layout>
             )} />
