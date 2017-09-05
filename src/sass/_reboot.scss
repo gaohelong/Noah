@@ -53,3 +53,31 @@ input, textarea, select, button {
     outline:            none;
     border:             1;
 }
+
+/* ant reset */
+.ant-layout-has-sider {
+    position:               absolute;
+    top:                    0;
+    right:                  0;
+    bottom:                 0;
+    left:                   0;
+}
+
+.ant-layout-header .trigger {
+    font-size:              18px;
+    line-height:            64px;
+    padding:                0 16px;
+    cursor:                 pointer;
+    @include                transition(color .3s);
+}
+
+.ant-layout-header .trigger:hover {
+    color:                  #108ee9;
+}
+
+.ant-layout-sider .logo {
+    height:                 64px;
+    background:             #333;
+    border-radius:          6px;
+    margin:                 16px;
+}

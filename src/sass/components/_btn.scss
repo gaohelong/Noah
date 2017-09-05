@@ -12,5 +12,6 @@
     font-size:              14px;
     letter-spacing:         1.6px;
     background-color:       $login-input;
+    cursor:                 pointer;
     @include                box-sizing(content);
 }
