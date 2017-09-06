@@ -48,12 +48,11 @@ module.exports = function(env) {
         output: {
             // filename: 'bundle.js',
             filename: 'assets/js/[name].[chunkhash].js', // 输出到assets/js/目录下
-            // path: publicPath, // 输出路径
             path: paths.DIST_PATH, // 输出路径
 
             /* 对于按需加载(on-demand-load)或加载外部资源(external resources)（如图片、文件等）来说，output.publicPath 是很重要的选项 */
             /* 如果指定了一个错误的值，则在加载这些资源时会收到 404 错误。 */
-            publicPath: paths.WWW_RUL // 一般都设置一个url否则去掉这项.
+            publicPath: paths.WWW_URL // 一般都设置一个url否则去掉这项.
         },
 
         /* webpack-dev-server */

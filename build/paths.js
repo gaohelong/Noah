@@ -5,7 +5,7 @@ var WWW_RUL = '';
 if (process.env.NODE_ENV == 'production') {
     WWW_URL = 'http://react.noah.com/';
 } else {
-    WWW_URL = 'http://localhost:8001/';    
+    WWW_URL = 'http://localhost:8001/';
 }
 
 module.exports = {

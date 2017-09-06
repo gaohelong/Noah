@@ -19,7 +19,9 @@ import Bundle from './Bundle';
 /* lazy container */
 import loadLogin from 'bundle-loader?lazy!../containers/Login';
 import loadMain from 'bundle-loader?lazy!../containers/Main';
-import loadPagination from 'bundle-loader?lazy!../containers/Pagination';
+// import loadList from 'bundle-loader?lazy!../containers/List/List';
+import loadListExample1 from 'bundle-loader?lazy!../containers/List/Example1';
+import loadListExample2 from 'bundle-loader?lazy!../containers/List/Example2';
 import loadF404 from 'bundle-loader?lazy!../containers/404/404';
 
 /* layout */
@@ -48,10 +50,26 @@ const Main = (props) => {
     );
 };
 
-const Pagination = (props) => {
+// const List = (props) => {
+//     return (
+//         <Bundle load={loadList}>
+//             {(List) => <List {...props} />}
+//         </Bundle>
+//     );
+// };
+
+const ListExample1 = (props) => {
     return (
-        <Bundle load={loadPagination}>
-            {(Pagination) => <Pagination {...props} />}
+        <Bundle load={loadListExample1}>
+            {(ListExample1) => <ListExample1 {...props} />}
+        </Bundle>
+    );
+};
+
+const ListExample2 = (props) => {
+    return (
+        <Bundle load={loadListExample2}>
+            {(ListExample2) => <ListExample2 {...props} />}
         </Bundle>
     );
 };
@@ -78,14 +96,32 @@ const routerConfig = [
         path: '/main',
         selVal: '1',
         component: Main,
-        breadcrumb: 'Home/main',
+        breadcrumb: 'Home~main',
         type: 2
     },
+    // {
+    //     path: '/list',
+    //     selVal: '2',
+    //     component: List,
+    //     breadcrumb: '列表实例/list',
+    //     type: 2
+    //     // routes: [
+    //     //     {
+    //     //         path: '/list/exp1',
+    //     //         component: ListExample1
+    //     //     },
+    //     //     {
+    //     //         path: '/list/exp2',
+    //     //         component: ListExample2
+    //     //     }
+    //     // ]
+    // },
     {
-        path: '/pagination',
+        exact: true,
+        path: '/list/exp1',
         selVal: '2',
-        component: Pagination,
-        breadcrumb: '分页管理/pagination',
+        component: ListExample1,
+        breadcrumb: '列表实例~main|列表实例1~list/exp1',
         type: 2
     },
     {
