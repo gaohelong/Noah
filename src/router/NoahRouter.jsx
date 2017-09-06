@@ -37,7 +37,7 @@ const Login = (props) => {
 
     return (
         <Bundle load={loadLogin}>
-            {(Login) => <Login {...props} Config={Config} />}
+            {(Login) => <Login {...props} loginSpecialProps="special" Config={Config} />}
         </Bundle>
     );
 };
@@ -94,10 +94,12 @@ const routerConfig = [
     },
     {
         path: '/main',
-        selVal: '1',
         component: Main,
-        breadcrumb: 'Home~main',
-        type: 2
+        type: 2,
+        toProps: {
+            selVal: '1',
+            breadcrumb: 'Home~main'
+        }
     },
     // {
     //     path: '/list',
@@ -105,24 +107,27 @@ const routerConfig = [
     //     component: List,
     //     breadcrumb: '列表实例/list',
     //     type: 2
-    //     // routes: [
-    //     //     {
-    //     //         path: '/list/exp1',
-    //     //         component: ListExample1
-    //     //     },
-    //     //     {
-    //     //         path: '/list/exp2',
-    //     //         component: ListExample2
-    //     //     }
-    //     // ]
+    //     routes: [
+    //         {
+    //             path: '/list/exp1',
+    //             component: ListExample1
+    //         },
+    //         {
+    //             path: '/list/exp2',
+    //             component: ListExample2
+    //         }
+    //     ]
     // },
     {
         exact: true,
         path: '/list/exp1',
-        selVal: '2',
         component: ListExample1,
-        breadcrumb: '列表实例~main|列表实例1~list/exp1',
-        type: 2
+        type: 2,
+        toProps: {
+            selVal: '2',
+            breadcrumb: '列表实例~main|列表实例1~list/exp1',
+            menuDefOpenKeys: 'list'
+        }
     },
     {
         component: F404,
@@ -134,10 +139,11 @@ const RouteCreate = (route) => {
     if (route.type === 1) {
         return <Route path={route.path} exact={route.exact} component={route.component} />;
     } else {
+        // 将自定义的Config属性注入到路由的组件中.
         return (
             <Route path={route.path} exact={route.exact} render={(props) => (
-                <Layout {...props} selVal={route.selVal} breadcrumb={route.breadcrumb}>
-                    <route.component {...props} />
+                <Layout {...props} {...route.toProps}>
+                    <route.component {...props} Config={Config} />
                 </Layout>
             )} />
         );

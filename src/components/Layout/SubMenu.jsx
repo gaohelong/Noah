@@ -53,7 +53,7 @@ class NoahSubMenu extends React.Component {
 
     render() {
         this.menuKey = 1;
-        const { theme, defaultSelectedKeys, mode } = this.props;
+        const { theme, defaultSelectedKeys, mode, defaultOpenKeys } = this.props;
         const menuList = this.menuConfig.map((v, i) => {
             let result;
             if (v.sub === undefined) {
@@ -65,7 +65,7 @@ class NoahSubMenu extends React.Component {
         });
 
         return (
-            <Menu theme={theme} defaultSelectedKeys={defaultSelectedKeys} mode={mode}>
+            <Menu theme={theme} defaultSelectedKeys={defaultSelectedKeys} mode={mode} defaultOpenKeys={defaultOpenKeys}>
                 {menuList}
             </Menu>
         );

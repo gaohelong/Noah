@@ -17,6 +17,7 @@ import { login } from '../redux/Actions/login';
 class Login extends React.Component {
     constructor(props) {
         super(props);
+        // console.log('Login:', props);
 
         // func.
         this.loginHandle = this.loginHandle.bind(this);
