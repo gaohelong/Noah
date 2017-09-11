@@ -16,3 +16,18 @@ export const pageLoadSuccess = () => {
         type: PAGE_LOAD_SUCCESS
     };
 };
+
+/* token */
+export const TOKEN_VERIFY_SUCCESS = 'TOKEN_VERIFY_SUCCESS';
+export const TOKEN_VERIFY_FAIL = 'TOKEN_VERIFY_FAIL';
+export const tokenVerifySuccess = () => {
+    return {
+        type: TOKEN_VERIFY_SUCCESS
+    };
+};
+
+export const tokenVerifyFail = () => {
+    return {
+        type: TOKEN_VERIFY_FAIL
+    };
+};

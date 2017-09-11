@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Layout, Icon} from 'antd';
 const { Header, Sider, Content } = Layout;
@@ -7,7 +8,37 @@ const { Header, Sider, Content } = Layout;
 import NoahBreadcrumb from './Breadcrumb';
 import NoahSubMenu from './SubMenu';
 
+/* fetch */
+import { fetchPOST } from '../../api/fetch';
+
+/* action */
+import { tokenVerifySuccess, tokenVerifyFail } from '../../redux/Actions/global';
+
 class NoahLayout extends React.Component {
+    constructor(props) {
+        super(props);
+
+        // token verify.
+        let { Config, history, dispatch } = this.props;
+        let url = process.env.NODE_ENV === 'production' ? Config.tokenVerifyUrl.prod : Config.tokenVerifyUrl.dev;
+        const verify = async () => {
+            await fetchPOST(url)
+                .then(response => response.json())
+                .then(json => {
+                    if (json.code !== 0) { // token失效.
+                        dispatch(tokenVerifyFail());
+                    } else {
+                        dispatch(tokenVerifySuccess());
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
+
+        verify();
+    }
+
     state = {
         collapsed: false
     };
@@ -22,7 +53,20 @@ class NoahLayout extends React.Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        // console.log(nextProps, this.props);
+        if (!nextProps.token) {
+            let { history } = this.props;
+            history.push('/');
+        }
+    }
+
     render() {
+        // token verify loading.
+        if (!this.props.token) {
+            return <div>Loading......</div>;
+        }
+
         const { selVal, menuDefOpenKeys, breadcrumb } = this.props;
         let breadcrumbWrapStyle = {
             marginTop: '23px',
@@ -56,4 +100,10 @@ class NoahLayout extends React.Component {
     }
 }
 
-export default NoahLayout;
+const mapStateToProps = (state) => {
+    return {
+        token: state.globalState.token
+    };
+};
+
+export default connect(mapStateToProps)(NoahLayout);

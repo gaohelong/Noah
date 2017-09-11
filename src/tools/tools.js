@@ -1,6 +1,14 @@
 // fetch get url proc.
 export const url = (host, url, data) => {
-    return host + url + '?' + urlParamsProc(data);
+    let resUrl = '';
+
+    if (url.indexOf('http') === -1) {
+        resUrl = host + url + '?' + urlParamsProc(data);
+    } else {
+        resUrl = url + '?' + urlParamsProc(data);
+    }
+
+    return resUrl;
 };
 
 const urlParamsProc = (data) => {

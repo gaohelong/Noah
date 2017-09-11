@@ -142,7 +142,7 @@ const RouteCreate = (route) => {
         // 将自定义的Config属性注入到路由的组件中.
         return (
             <Route path={route.path} exact={route.exact} render={(props) => (
-                <Layout {...props} {...route.toProps}>
+                <Layout {...props} {...route.toProps} Config={Config}>
                     <route.component {...props} Config={Config} />
                 </Layout>
             )} />
