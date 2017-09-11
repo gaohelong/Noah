@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table, Icon } from 'antd';
+import { Table, Icon, Popconfirm } from 'antd';
 
 /* action */
 import { pageExp1List } from '../../redux/Actions/page';
@@ -12,6 +12,7 @@ class Example1 extends React.Component {
 
         // func.
         this.handleTableChange = this.handleTableChange.bind(this);
+        // this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -26,16 +27,23 @@ class Example1 extends React.Component {
         dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current}));
     }
 
+    // 给当前类设置实例属性, 这样设置跟在constructor中的设置this.handleDelete.bind(this)功能是一样的.
+    handleDelete = (id, curPage) => {
+        console.log(id, curPage);
+    }
+
     render() {
         let exp1List = {};
         let data = [];
         let total = 0;
         let loading = true;
-        const pageSize = 10;
+        let curPage = 0;
+        const pageSize = 12;
 
         if (this.props.exp1List) {
             exp1List = this.props.exp1List;
-            data = exp1List.list.slice((exp1List.curPage - 1) * pageSize, exp1List.curPage * pageSize);
+            curPage = exp1List.curPage;
+            data = exp1List.list.slice((curPage - 1) * pageSize, curPage * pageSize);
             total = exp1List.total;
             loading = this.props.pageLoading;
         }
@@ -50,7 +58,7 @@ class Example1 extends React.Component {
                 title: '姓名',
                 dataIndex: 'name',
                 key: 'name',
-                render: text => <a href="#">{text}</a>
+                render: text => <a>{text}</a>
             },
             {
                 title: '年龄',
@@ -70,17 +78,22 @@ class Example1 extends React.Component {
             {
                 title: '操作',
                 key: 'operation',
-                render: (text, record) => (
-                    <span>
-                        <a href="#">{record.id}</a>
-                        <span className="ant-divider" />
-                        <a href="#">查看</a>
-                        <span className="ant-divider" />
-                        <a href="#">编辑</a>
-                        <span className="ant-divider" />
-                        <a href="#">删除</a>
-                    </span>
-                )
+                render: (text, record) => {
+                    let delText = '确定要删除' + record.name + '?';
+                    return (
+                        <span>
+                            <a>{record.id}</a>
+                            <span className="ant-divider" />
+                            <a>查看</a>
+                            <span className="ant-divider" />
+                            <a>编辑</a>
+                            <span className="ant-divider" />
+                            <Popconfirm title={delText} onConfirm={() => this.handleDelete(record.id, curPage)}>
+                                <a>删除</a>
+                            </Popconfirm>
+                        </span>
+                    );
+                }
             }
         ];
 
@@ -95,7 +108,7 @@ class Example1 extends React.Component {
         return (
             <div>
                 <Table columns={columns} dataSource={data} pagination={paginationConfig} loading={loading}
-                    onChange={this.handleTableChange} />
+                    onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>} />
             </div>
         );
     }

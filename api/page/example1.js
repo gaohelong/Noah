@@ -30,17 +30,17 @@ const list = Mock.mock({
                 Random.county(true),
                 Random.county(true)
             ],
-            'title|1': [
-                Random.cparagraph(1),
-                Random.cparagraph(1),
-                Random.cparagraph(1),
-                Random.cparagraph(1),
-                Random.cparagraph(1),
-                Random.cparagraph(1),
-                Random.cparagraph(1),
-                Random.cparagraph(1),
-                Random.cparagraph(1),
-                Random.cparagraph(1)
+            'desc|1': [
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6),
+                Random.cparagraph(1, 6)
             ],
             'date|1': [
                 Random.datetime('yyyy-MM-dd'),
