@@ -1,82 +1,111 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Table, Icon } from 'antd';
 
+/* action */
+import { pageExp1List } from '../../redux/Actions/page';
+import { pageLoading } from '../../redux/Actions/global';
+
 class Example1 extends React.Component {
+    constructor(props) {
+        super(props);
+
+        // func.
+        this.handleTableChange = this.handleTableChange.bind(this);
+    }
+
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch(pageExp1List(dispatch, '/pageExp1List'));
+    }
+
+    handleTableChange(pagination, filters, sorter) {
+        // console.log(pagination, filters, sorter);
+        const { dispatch } = this.props;
+        dispatch(pageLoading());
+        dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current}));
+    }
+
     render() {
-        // console.log('Example1', this.props);
+        let exp1List = {};
+        let data = [];
+        let total = 0;
+        let loading = true;
+        const pageSize = 10;
+
+        if (this.props.exp1List) {
+            exp1List = this.props.exp1List;
+            data = exp1List.list.slice((exp1List.curPage - 1) * pageSize, exp1List.curPage * pageSize);
+            total = exp1List.total;
+            loading = this.props.pageLoading;
+        }
 
         const columns = [
             {
-                title: 'Name',
+                title: 'id',
+                dataIndex: 'id',
+                key: 'id'
+            },
+            {
+                title: '姓名',
                 dataIndex: 'name',
                 key: 'name',
                 render: text => <a href="#">{text}</a>
             },
             {
-                title: 'Age',
+                title: '年龄',
                 dataIndex: 'age',
                 key: 'age'
             },
             {
-                title: 'Address',
+                title: '地址',
                 dataIndex: 'address',
                 key: 'address'
             },
             {
-                title: 'Action',
-                key: 'action',
+                title: '日期',
+                dataIndex: 'date',
+                key: 'date'
+            },
+            {
+                title: '操作',
+                key: 'operation',
                 render: (text, record) => (
                     <span>
-                        <a href="#">Action 一 {record.name}</a>
+                        <a href="#">{record.id}</a>
                         <span className="ant-divider" />
-                        <a href="#">Delete</a>
+                        <a href="#">查看</a>
                         <span className="ant-divider" />
-                        <a href="#" className="ant-dropdown-link">
-                            More actions <Icon type="down" />
-                        </a>
+                        <a href="#">编辑</a>
+                        <span className="ant-divider" />
+                        <a href="#">删除</a>
                     </span>
                 )
             }
         ];
 
-        const data = [
-            {key: '1', name: 'John Brown', age: 21, address: 'New York No. 1 Lake Park'},
-            {key: '2', name: 'Jim Green', age: 22, address: 'London No. 1 Lake Park'},
-            {key: '3', name: 'Joe Black', age: 23, address: 'Sidney No. 1 Lake Park'},
-            {key: '4', name: 'Joe Black', age: 24, address: 'Sidney No. 1 Lake Park'},
-            {key: '5', name: 'Joe Black', age: 25, address: 'Sidney No. 1 Lake Park'},
-            {key: '6', name: 'Joe Black', age: 26, address: 'Sidney No. 1 Lake Park'},
-            {key: '7', name: 'Joe Black', age: 27, address: 'Sidney No. 1 Lake Park'},
-            {key: '8', name: 'Joe Black', age: 28, address: 'Sidney No. 1 Lake Park'},
-            {key: '9', name: 'Joe Black', age: 29, address: 'Sidney No. 1 Lake Park'},
-            {key: '10', name: 'Joe Black', age: 30, address: 'Sidney No. 1 Lake Park'},
-            {key: '11', name: 'Joe Black', age: 31, address: 'Sidney No. 1 Lake Park'},
-            {key: '12', name: 'Joe Black', age: 32, address: 'Sidney No. 1 Lake Park'},
-            {key: '13', name: 'Joe Black', age: 33, address: 'Sidney No. 1 Lake Park'},
-            {key: '14', name: 'Joe Black', age: 34, address: 'Sidney No. 1 Lake Park'},
-            {key: '15', name: 'Joe Black', age: 35, address: 'Sidney No. 1 Lake Park'},
-            {key: '16', name: 'Joe Black', age: 36, address: 'Sidney No. 1 Lake Park'},
-            {key: '17', name: 'Joe Black', age: 37, address: 'Sidney No. 1 Lake Park'},
-            {key: '18', name: 'Joe Black', age: 38, address: 'Sidney No. 1 Lake Park'},
-            {key: '19', name: 'Joe Black', age: 39, address: 'Sidney No. 1 Lake Park'},
-            {key: '20', name: 'Joe Black', age: 40, address: 'Sidney No. 1 Lake Park'},
-            {key: '21', name: 'Joe Black', age: 41, address: 'Sidney No. 1 Lake Park'}
-        ];
-
         const paginationConfig = {
-            pageSize: 4,
+            pageSize: pageSize,
             showQuickJumper: true,
-            defaultCurrent: 2,
-            total: 21,
+            defaultCurrent: 1,
+            total: total,
             showTotal: (total, range) => (`${range[0]} - ${range[1]} of ${total} items`)
         };
 
         return (
             <div>
-                <Table columns={columns} dataSource={data} pagination={paginationConfig} />
+                <Table columns={columns} dataSource={data} pagination={paginationConfig} loading={loading}
+                    onChange={this.handleTableChange} />
             </div>
         );
     }
 }
 
-export default Example1;
+const mapStateToProps = (state) => {
+    return {
+        exp1List: state.pageState.exp1List,
+        pageLoading: state.globalState.pageLoading
+    };
+};
+
+export default connect(mapStateToProps)(Example1);

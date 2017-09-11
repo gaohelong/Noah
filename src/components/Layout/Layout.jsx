@@ -47,7 +47,7 @@ class NoahLayout extends React.Component {
                     <div style={breadcrumbWrapStyle}>
                         <NoahBreadcrumb breadcrumb={breadcrumb} />
                     </div>
-                    <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
+                    <Content style={{ margin: '24px 16px', padding: '24px', background: '#fff', height: '100%' }}>
                         {this.props.children}
                     </Content>
                 </Layout>
