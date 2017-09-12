@@ -9,6 +9,9 @@ const Config = {
     tokenVerifyUrl: {
         prod: 'http://hl.react-noah.com/tokenVerify',
         dev: 'http://localhost:8002/tokenVerify'
+    },
+    times: {
+        loadingTime: 2000
     }
 };
 

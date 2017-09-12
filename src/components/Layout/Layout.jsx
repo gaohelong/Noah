@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Layout, Icon} from 'antd';
+import { Layout, Icon, Spin } from 'antd';
 const { Header, Sider, Content } = Layout;
 
 /* Noah Compoent */
@@ -17,6 +17,12 @@ import { tokenVerifySuccess, tokenVerifyFail } from '../../redux/Actions/global'
 class NoahLayout extends React.Component {
     constructor(props) {
         super(props);
+
+        // state.
+        this.state = {
+            collapsed: false,
+            initLoading: true
+        };
 
         // token verify.
         let { Config, history, dispatch } = this.props;
@@ -39,9 +45,9 @@ class NoahLayout extends React.Component {
         verify();
     }
 
-    state = {
-        collapsed: false
-    };
+    // state = {
+    //     collapsed: false
+    // };
 
     onCollapse = (collapsed) => {
         this.setState({ collapsed });
@@ -55,19 +61,29 @@ class NoahLayout extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps, this.props);
+
+        // token verify.
         if (!nextProps.token) {
             let { history } = this.props;
             history.push('/');
         }
+
+        this.setState({initLoading: true});
     }
 
     render() {
+        const { selVal, menuDefOpenKeys, breadcrumb, Config } = this.props;
+        const sysPre = Config.prefixs.system;
+
         // token verify loading.
         if (!this.props.token) {
-            return <div>Loading......</div>;
+            return (
+                <div className={sysPre + 'fullScreenLoading'}>
+                    <Spin size="large" className={sysPre + 'loadingCenter'} />
+                </div>
+            );
         }
 
-        const { selVal, menuDefOpenKeys, breadcrumb } = this.props;
         let breadcrumbWrapStyle = {
             marginTop: '23px',
             marginLeft: '20px'
@@ -78,8 +94,19 @@ class NoahLayout extends React.Component {
             title = 'N';
         }
 
+        // toggle page loading定时器.
+        clearTimeout(this.setTimeClear);
+        this.setTimeClear = setTimeout(() => {
+            this.setState({initLoading: false});
+        }, Config.times.loadingTime);
+
         return (
             <Layout>
+                {
+                    this.state.initLoading === true && <div className={sysPre + 'fullScreenLoadingFadeout'}>
+                        <Spin size="large" className={sysPre + 'loadingCenter'} />
+                    </div>
+                }
                 <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
                     <div className="logo">{title}</div>
                     <NoahSubMenu theme="dark" defaultSelectedKeys={[selVal]} mode="inline" defaultOpenKeys={[menuDefOpenKeys]} />
