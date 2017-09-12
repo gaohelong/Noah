@@ -14,6 +14,9 @@ import { fetchPOST } from '../../api/fetch';
 /* action */
 import { tokenVerifySuccess, tokenVerifyFail } from '../../redux/Actions/global';
 
+/* component */
+import OperationLoading from '../Loading/OperationLoading';
+
 class NoahLayout extends React.Component {
     constructor(props) {
         super(props);
@@ -61,6 +64,7 @@ class NoahLayout extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps, this.props);
+        const { Config } = this.props;
 
         // token verify.
         if (!nextProps.token) {
@@ -68,7 +72,15 @@ class NoahLayout extends React.Component {
             history.push('/');
         }
 
+        /* toggle page */
         this.setState({initLoading: true});
+
+        // toggle page loading定时器.
+        clearTimeout(this.setTimeClear);
+        this.setTimeClear = setTimeout(() => {
+            clearTimeout(this.setTimeClear);
+            this.setState({initLoading: false});
+        }, Config.times.loadingTime);
     }
 
     render() {
@@ -94,14 +106,11 @@ class NoahLayout extends React.Component {
             title = 'N';
         }
 
-        // toggle page loading定时器.
-        clearTimeout(this.setTimeClear);
-        this.setTimeClear = setTimeout(() => {
-            this.setState({initLoading: false});
-        }, Config.times.loadingTime);
+        console.log('Layout');
 
         return (
             <Layout>
+                <OperationLoading Config={Config} />
                 {
                     this.state.initLoading === true && <div className={sysPre + 'fullScreenLoadingFadeout'}>
                         <Spin size="large" className={sysPre + 'loadingCenter'} />

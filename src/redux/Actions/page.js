@@ -1,6 +1,9 @@
 /* import */
 import { fetchPOST } from '../../api/fetch';
-import { FETCH_REQUIRE_NO_DATA, FETCH_REQUIRE_FAIL, PAGE_LOAD_SUCCESS } from './global';
+import {
+    FETCH_REQUIRE_NO_DATA, FETCH_REQUIRE_FAIL, PAGE_LOAD_SUCCESS,
+    GLOBAL_OPERATION_LOADING_CLOSE
+} from './global';
 
 /* export */
 export const PAGE_EXP1_LIST = 'PAGE_EXP1_LIST';
@@ -27,7 +30,7 @@ export const pageExp1List = (dispatch, url, data = {page: 1}) => {
                     });
 
                     dispatch({
-                        type: PAGE_LOAD_SUCCESS
+                        type: GLOBAL_OPERATION_LOADING_CLOSE
                     });
                 } else {
                     dispatch({

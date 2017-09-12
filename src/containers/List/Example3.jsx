@@ -5,7 +5,7 @@ import { Map as immuMap, is as immuIs } from 'immutable';
 
 /* action */
 import { pageExp1List, pageExp1Del } from '../../redux/Actions/page';
-import { globalOperationLoadingOpen } from '../../redux/Actions/global';
+import { pageLoading } from '../../redux/Actions/global';
 
 class Example1 extends React.Component {
     constructor(props) {
@@ -18,7 +18,6 @@ class Example1 extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(globalOperationLoadingOpen());
         dispatch(pageExp1List(dispatch, '/pageExp1List'));
     }
 
@@ -42,7 +41,7 @@ class Example1 extends React.Component {
     handleTableChange(pagination, filters, sorter) {
         // console.log(pagination, filters, sorter);
         const { dispatch } = this.props;
-        dispatch(globalOperationLoadingOpen());
+        dispatch(pageLoading());
         dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current}));
     }
 
@@ -78,6 +77,7 @@ class Example1 extends React.Component {
             curPage = exp1List.curPage;
             data = exp1List.list.slice((curPage - 1) * pageSize, curPage * pageSize);
             total = exp1List.total;
+            loading = this.props.pageLoading;
         }
 
         const columns = [
@@ -139,7 +139,7 @@ class Example1 extends React.Component {
 
         return (
             <div>
-                <Table columns={columns} dataSource={data} pagination={paginationConfig}
+                <Table columns={columns} dataSource={data} pagination={paginationConfig} loading={loading}
                     onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>} />
             </div>
         );
@@ -149,6 +149,7 @@ class Example1 extends React.Component {
 const mapStateToProps = (state) => {
     return {
         exp1List: state.pageState.exp1List,
+        pageLoading: state.globalState.pageLoading,
         delInfo: state.pageState.delInfo
     };
 };

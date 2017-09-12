@@ -31,3 +31,18 @@ export const tokenVerifyFail = () => {
         type: TOKEN_VERIFY_FAIL
     };
 };
+
+/* 操作loading */
+export const GLOBAL_OPERATION_LOADING_OPEN = 'GLOBAL_OPERATION_LOADING_OPEN';
+export const GLOBAL_OPERATION_LOADING_CLOSE = 'GLOBAL_OPERATION_LOADING_CLOSE';
+export const globalOperationLoadingOpen = () => {
+    return {
+        type: GLOBAL_OPERATION_LOADING_OPEN
+    };
+};
+
+export const globalOperationLoadingClose = () => {
+    return {
+        type: GLOBAL_OPERATION_LOADING_CLOSE
+    };
+};

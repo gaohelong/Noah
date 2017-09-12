@@ -1,5 +1,6 @@
 import {
-    PAGE_LOADING, PAGE_LOAD_SUCCESS, TOKEN_VERIFY_SUCCESS, TOKEN_VERIFY_FAIL
+    PAGE_LOADING, PAGE_LOAD_SUCCESS, TOKEN_VERIFY_SUCCESS, TOKEN_VERIFY_FAIL,
+    GLOBAL_OPERATION_LOADING_OPEN, GLOBAL_OPERATION_LOADING_CLOSE
 } from '../Actions/global';
 
 const initState = {};
@@ -21,6 +22,14 @@ export const globalState = (state = initState, action) => {
         case TOKEN_VERIFY_FAIL:
             return Object.assign({}, state, {
                 token: false
+            });
+        case GLOBAL_OPERATION_LOADING_OPEN:
+            return Object.assign({}, state, {
+                operationLoading: true
+            });
+        case GLOBAL_OPERATION_LOADING_CLOSE:
+            return Object.assign({}, state, {
+                operationLoading: false
             });
         default:
             return state;
