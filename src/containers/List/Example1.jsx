@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table, Icon, Popconfirm } from 'antd';
+import { Table, Icon, Popconfirm, message } from 'antd';
+import { Map as immuMap, is as immuIs } from 'immutable';
 
 /* action */
-import { pageExp1List } from '../../redux/Actions/page';
+import { pageExp1List, pageExp1Del } from '../../redux/Actions/page';
 import { pageLoading } from '../../redux/Actions/global';
 
 class Example1 extends React.Component {
@@ -20,6 +21,23 @@ class Example1 extends React.Component {
         dispatch(pageExp1List(dispatch, '/pageExp1List'));
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        // 删除提示.
+        let { delInfo } = this.props;
+        let delInfoCompRes = immuIs(immuMap(prevProps.delInfo), immuMap(delInfo));
+        if (delInfo && !delInfoCompRes) {
+            message.config({top: 10});
+
+            if (delInfo.type === 'success') {
+                message.success(delInfo.msg, 3);
+                this.handleTableChange({current: delInfo.curPage});
+            } else if (delInfo.type === 'fail') {
+                message.error(delInfo.msg, 3);
+            }
+        }
+    }
+
+    // 分页.
     handleTableChange(pagination, filters, sorter) {
         // console.log(pagination, filters, sorter);
         const { dispatch } = this.props;
@@ -27,12 +45,24 @@ class Example1 extends React.Component {
         dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current}));
     }
 
+    // 删除.
     // 给当前类设置实例属性, 这样设置跟在constructor中的设置this.handleDelete.bind(this)功能是一样的.
-    handleDelete = (id, curPage) => {
-        console.log(id, curPage);
+    handleDelete = (id, curPage, pageSize, total) => {
+        // console.log(id, curPage);
+        const { dispatch } = this.props;
+
+        // 计算删除后本页是否还有数据.
+        const totalPage = Math.ceil(total / pageSize);
+        const totalFloorPage = Math.floor(total / pageSize);
+        if (curPage === totalPage && totalPage > 1) {
+            curPage = total - totalFloorPage * pageSize === 1 ? curPage - 1 : curPage;
+        }
+
+        dispatch(pageExp1Del(dispatch, '/pageExp1Del', {id: id, curPage: curPage}));
     }
 
     render() {
+        // list.
         let exp1List = {};
         let data = [];
         let total = 0;
@@ -88,7 +118,7 @@ class Example1 extends React.Component {
                             <span className="ant-divider" />
                             <a>编辑</a>
                             <span className="ant-divider" />
-                            <Popconfirm title={delText} onConfirm={() => this.handleDelete(record.id, curPage)}>
+                            <Popconfirm title={delText} onConfirm={() => this.handleDelete(record.id, curPage, pageSize, total)}>
                                 <a>删除</a>
                             </Popconfirm>
                         </span>
@@ -117,7 +147,8 @@ class Example1 extends React.Component {
 const mapStateToProps = (state) => {
     return {
         exp1List: state.pageState.exp1List,
-        pageLoading: state.globalState.pageLoading
+        pageLoading: state.globalState.pageLoading,
+        delInfo: state.pageState.delInfo
     };
 };
 

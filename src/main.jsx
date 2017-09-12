@@ -11,7 +11,7 @@ import 'moment/locale/zh-tw'; // 推荐在入口文件全局设置 locale.
 moment.locale('zh-tw');
 
 /* ant css */
-import 'antd/dist/antd';
+import 'antd/dist/antd.css';
 
 /* store */
 store.subscribe(() => { // 监听state变化.
