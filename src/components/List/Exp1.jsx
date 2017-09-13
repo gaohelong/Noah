@@ -4,8 +4,11 @@ import { Table, Icon, Popconfirm, message } from 'antd';
 import { Map as immuMap, is as immuIs } from 'immutable';
 
 /* action */
-import { pageExp1List, pageExp1Del } from '../../redux/Actions/page';
+import { pageExp1List, pageExp1Del, pageDetailInfo } from '../../redux/Actions/page';
 import { globalOperationLoadingOpen } from '../../redux/Actions/global';
+
+/* component */
+import DetailExp1 from '../Detail/Exp1';
 
 class ListExp1 extends React.Component {
     constructor(props) {
@@ -62,8 +65,15 @@ class ListExp1 extends React.Component {
         dispatch(pageExp1Del(dispatch, '/pageExp1Del', {id: id, curPage: curPage}));
     }
 
+    // 查看详情.
+    handleShowDetail = (detailInfo) => {
+        const { dispatch } = this.props;
+        dispatch(pageDetailInfo(detailInfo));
+    }
+
     render() {
         console.log('ListExp1Component');
+        const { Config } = this.props;
 
         // list.
         let exp1List = {};
@@ -116,7 +126,7 @@ class ListExp1 extends React.Component {
                         <span>
                             <a>{record.id}</a>
                             <span className="ant-divider" />
-                            <a>查看</a>
+                            <a onClick={() => this.handleShowDetail(record)}>查看</a>
                             <span className="ant-divider" />
                             <a>编辑</a>
                             <span className="ant-divider" />
@@ -139,6 +149,7 @@ class ListExp1 extends React.Component {
 
         return (
             <div>
+                <DetailExp1 Config={Config} />
                 <Table columns={columns} dataSource={data} pagination={paginationConfig}
                     onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>} />
             </div>

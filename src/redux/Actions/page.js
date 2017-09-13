@@ -11,6 +11,9 @@ export const PAGE_EXP1_LIST = 'PAGE_EXP1_LIST';
 export const PAGE_EXP1_DEL_SUCCESS = 'PAGE_EXP1_DEL_SUCCESS';
 export const PAGE_EXP1_DEL_FAIL = 'PAGE_EXP1_DEL_FAIL';
 
+export const PAGE_EXP1_DETAIL_INFO = 'PAGE_EXP1_DETAIL_INFO';
+export const PAGE_EXP1_DETAIL_INFO_EMPTY = 'PAGE_EXP1_DETAIL_INFO_EMPTY';
+
 // 获取列表.
 export const pageExp1List = (dispatch, url, data = {page: 1}) => {
     return () => {
@@ -86,5 +89,20 @@ export const pageExp1Del = (dispatch, url, data = {}) => {
                     }
                 });
             });
+    };
+};
+
+// 查看.
+export const pageDetailInfo = (detailInfo) => {
+    return {
+        type: PAGE_EXP1_DETAIL_INFO,
+        detailInfo: detailInfo
+    };
+};
+
+// 清除查看数据.
+export const pageDetailInfoEmpty = () => {
+    return {
+        type: PAGE_EXP1_DETAIL_INFO_EMPTY
     };
 };

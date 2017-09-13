@@ -1,5 +1,5 @@
 import {
-    PAGE_EXP1_LIST, PAGE_EXP1_DEL_SUCCESS, PAGE_EXP1_DEL_FAIL
+    PAGE_EXP1_LIST, PAGE_EXP1_DEL_SUCCESS, PAGE_EXP1_DEL_FAIL, PAGE_EXP1_DETAIL_INFO, PAGE_EXP1_DETAIL_INFO_EMPTY
 } from '../Actions/page';
 
 const initState = {};
@@ -43,6 +43,14 @@ export const pageState = (state = initState, action) => {
                     curPage: action.data.curPage,
                     type: 'fail'
                 }
+            });
+        case PAGE_EXP1_DETAIL_INFO:
+            return Object.assign({}, state, {
+                detailInfo: action.detailInfo
+            });
+        case PAGE_EXP1_DETAIL_INFO_EMPTY:
+            return Object.assign({}, state, {
+                detailInfo: {}
             });
         default:
             return state;
