@@ -10,7 +10,7 @@ export const pageState = (state = initState, action) => {
             /* 写法1
             return Object.assign({}, state, {
                 exp1List: {
-                    loading: action.data.loading,
+                    // loading: action.data.loading,
                     list: action.data.list,
                     curPage: action.data.curPage,
                     total: action.data.total
@@ -20,7 +20,7 @@ export const pageState = (state = initState, action) => {
             /* 写法2 */
             let _state = state;
             _state.exp1List = {
-                loading: action.data.loading,
+                // loading: action.data.loading,
                 list: action.data.list,
                 curPage: action.data.curPage,
                 total: action.data.total
