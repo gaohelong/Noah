@@ -21,7 +21,7 @@ const extractSass = new ExtractTextPlugin({
 
 const extractCss = new ExtractTextPlugin({
     // filename: "assets/css/[contenthash].css", // 输出到assets/css/目录下.
-    filename: "assets/css/[name].contenthash].css", // 输出到assets/css/目录下.
+    filename: "assets/css/[name].[contenthash].css", // 输出到assets/css/目录下.
     // disable: process.env.NODE_ENV === "development" // true: 禁用，这是css在当前页面的<style></style>中. 如果为false: 启用，则单独生成css文件. 默认为false.
 });
 
