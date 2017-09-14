@@ -31,6 +31,11 @@ class NoahLayout extends React.Component {
         let { Config, history, dispatch } = this.props;
         let url = process.env.NODE_ENV === 'production' ? Config.tokenVerifyUrl.prod : Config.tokenVerifyUrl.dev;
         const verify = async () => {
+            console.group();
+            console.time();
+            console.log('token verify begin');
+
+            // fetchPOST(url)
             await fetchPOST(url)
                 .then(response => response.json())
                 .then(json => {
@@ -43,6 +48,10 @@ class NoahLayout extends React.Component {
                 .catch(error => {
                     console.log(error);
                 });
+
+            console.log('token verify end');
+            console.timeEnd();
+            console.groupEnd();
         };
 
         verify();
