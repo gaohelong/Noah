@@ -17,6 +17,11 @@ class ListExp1 extends React.Component {
         // func.
         this.handleTableChange = this.handleTableChange.bind(this);
         // this.handleDelete = this.handleDelete.bind(this);
+
+        // state.
+        this.state = {
+            selectedRowKeys: []
+        };
     }
 
     componentDidMount() {
@@ -43,6 +48,8 @@ class ListExp1 extends React.Component {
 
     // 分页.
     handleTableChange(pagination, filters, sorter) {
+        this.setState({selectedRowKeys: []});
+
         // console.log(pagination, filters, sorter);
         const { dispatch } = this.props;
         dispatch(globalOperationLoadingOpen());
@@ -100,7 +107,11 @@ class ListExp1 extends React.Component {
                 title: '姓名',
                 dataIndex: 'name',
                 key: 'name',
-                render: text => <a>{text}</a>
+                render: (text, record) => {
+                    return (
+                        <a onClick={() => this.handleShowDetail(record)}>{text}</a>
+                    );
+                }
             },
             {
                 title: '年龄',
@@ -147,11 +158,34 @@ class ListExp1 extends React.Component {
             showTotal: (total, range) => (`${range[0]} - ${range[1]} of ${total} items`)
         };
 
+        // 全选、单选配置.
+        const { selectedRowKeys } = this.state;
+        const rowSelection = {
+            // type: 'radio', // radio、checkbox. 默认为checkbox
+            selectedRowKeys, // 如果设置此项并且为[]那么分页的时候上页的选项不会附加到当前页, 否则附加到当前页(指定选中项的 key 数组，需要和 onChange 进行配合).
+            onChange: (selectedRowKeys, selectedRows) => {
+                console.group();
+                console.log(selectedRowKeys);
+                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                console.groupEnd();
+
+                this.setState({selectedRowKeys});
+            },
+            // onSelect: (record, selected, selectedRows) => {
+            //     console.log(record, selected, selectedRows);
+            // },
+            // 设置name等于Disabled User的行不能被选中.
+            getCheckboxProps: record => ({
+                disabled: record.name === 'Disabled User'    // Column configuration not to be checked
+            })
+        };
+
         return (
             <div>
                 <DetailExp1 Config={Config} />
                 <Table columns={columns} dataSource={data} pagination={paginationConfig}
-                    onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>} />
+                    onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>}
+                    rowSelection={rowSelection} />
             </div>
         );
     }
