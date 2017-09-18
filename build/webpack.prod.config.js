@@ -1,6 +1,10 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
+// path.
 var path = require('path');
+const paths = require('./paths');
 
 // DefinePlugin 允许创建一个在编译时可以配置的全局常量。这可能会对开发模式和发布模式的构建允许不同的行为非常有用。
 var definePluginConfig = new webpack.DefinePlugin({
@@ -13,7 +17,7 @@ var definePluginConfig = new webpack.DefinePlugin({
 // 将css提取成单独文件.
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 const extractSass = new ExtractTextPlugin({
-    filename: "/assets/css/[name].[contenthash].css",
+    filename: "assets/css/[name].[contenthash].css",
     // disable: process.env.NODE_ENV === "development" // true: 禁用，这是css在当前页面的<style></style>中. 如果为false: 启用，则单独生成css文件. 默认为false.
 });
 
@@ -27,18 +31,28 @@ module.exports = {
     /* entry */
     entry: {
         main: ['./src/main.jsx'],
-        // common: [
-        //     'react',
-        //     'react-dom'
-        // ]
+        vendor: [
+            'react',
+            'react-dom',
+            'redux',
+            'react-redux',
+            'react-router-dom',
+            'immutable',
+            'antd',
+        ]
     },
 
     /* output */
     output: {
         // filename: 'bundle.js',
         filename: 'assets/js/[name].[chunkhash].js',
-        path: path.resolve(__dirname, '../dist'),
+        path: paths.DIST_PATH,
+        // path: path.resolve(__dirname, '../dist'),
         // chunkFilename: '[name].[chunkhash:5].min.js'
+
+        /* 对于按需加载(on-demand-load)或加载外部资源(external resources)（如图片、文件等）来说，output.publicPath 是很重要的选项 */
+        /* 如果指定了一个错误的值，则在加载这些资源时会收到 404 错误。 */
+        publicPath: paths.WWW_URL // 一般都设置一个url否则去掉这项.
     },
 
     /* 设置模块如何解析 */
@@ -79,13 +93,13 @@ module.exports = {
                 use: extractSass.extract({
                     use: [
                         {
-                            loader: "css-loader",
+                            loader: "css-loader?sourceMap",
                             options:{
                                 minimize: true // css压缩
                             }
                         },
                         // {loader: "sass-loader"}
-                        {loader: "sass-loader?includePaths[]=" + path.resolve(__dirname, "../node_modules/compass-mixins/lib")}
+                        {loader: "sass-loader?sourceMap&includePaths[]=" + path.resolve(__dirname, "../node_modules/compass-mixins/lib")}
                     ],
                     // 在开发环境使用 style-loader
                     fallback: "style-loader"
@@ -158,10 +172,14 @@ module.exports = {
         definePluginConfig,
 
         // js压缩.
-        new webpack.optimize.UglifyJsPlugin({
+        new UglifyJSPlugin({
             compress: {
-                warnings: false
-            }
+                warnings: false,
+                // drop_console: true
+            },
+            output: {
+                comments: false
+            },
         }),
 
         // 提取成单独的css文件.
@@ -172,6 +190,11 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Noah System',
             template: './src/template/app.html',
+        }),
+
+        // 公共文件提取.
+        new webpack.optimize.CommonsChunkPlugin({
+            name: ['vendor', 'manifest']
         }),
     ]
 };
