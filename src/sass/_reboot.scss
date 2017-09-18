@@ -84,6 +84,9 @@ input, textarea, select, button {
     font-size:              18px;
     color:                  #fff;
 }
-body .ant-modal-mask {
-    background-color:  rgba(255, 255, 255, 0.15);
+
+body {
+    .ant-modal-mask { background-color: rgba(255, 255, 255, 0.15); }
+    .ant-form-item { margin-bottom: 0; }
+    .has-error .ant-form-explain, .has-error .ant-form-split { margin-top: 10px; }
 }

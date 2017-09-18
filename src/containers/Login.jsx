@@ -14,15 +14,56 @@ import { connect } from 'react-redux';
 /* action */
 import { login } from '../redux/Actions/login';
 
-class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        // console.log('Login:', props);
-
-        // func.
-        this.loginHandle = this.loginHandle.bind(this);
+/* Login From */
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+const FormItem = Form.Item;
+class LoginForm extends React.Component {
+    loginHandle = (e) => {
+        e.preventDefault();
+        const { dispatch } = this.props;
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                // console.log('Received values of form: ', values);
+                dispatch(login(dispatch, '/login', {
+                    user: values.username,
+                    pwd: values.password
+                }));
+            }
+        });
     }
 
+    render() {
+        const { getFieldDecorator } = this.props.form;
+        const sysPre = this.props.sysPre;
+        const inputCls = sysPre + 'input-base';
+
+        return (
+            <Form onSubmit={this.loginHandle}>
+                <FormItem>
+                    {getFieldDecorator('username', {
+                        rules: [{ required: true, message: '请输入用户名!' }]
+                    })(
+                        <input type="text" className={inputCls} placeholder="Username" autoComplete="off" />
+                    )}
+                </FormItem>
+                <FormItem>
+                    {getFieldDecorator('password', {
+                        rules: [{ required: true, message: '请输入密码!' }]
+                    })(
+                        <input type="password" className={inputCls} placeholder="Password" autoComplete="off" />
+                    )}
+                </FormItem>
+                <FormItem>
+                    <button type="submit" className={sysPre + 'btn-base'} onClick={this.loginHandle}>Login</button>
+                </FormItem>
+            </Form>
+        );
+    }
+}
+const LoginFormComponent = Form.create()(LoginForm);
+
+/* Login */
+class Login extends React.Component {
     componentDidMount() {
     }
 
@@ -35,27 +76,16 @@ class Login extends React.Component {
         }
     }
 
-    loginHandle() {
-        const { dispatch } = this.props;
-        dispatch(login(dispatch, '/login', {
-            user: this.userEle.value,
-            pwd: this.pwdEle.value
-        }));
-    }
-
     render() {
-        const { Config } = this.props;
+        const { Config, dispatch } = this.props;
         const sysPre = Config.prefixs.system;
-        let inputCls = sysPre + 'input-base';
 
         return (
             <div className={sysPre + 'login'}>
                 <div className="main">
                     <div className="logo">Noth System</div>
                     <div className="info">
-                        <input type="text" className={inputCls} id="username" ref={(input) => (this.userEle = input)} placeholder="Username" autoComplete="off" />
-                        <input type="password" className={inputCls} id="password" ref={(input) => (this.pwdEle = input)} placeholder="Password" autoComplete="off" />
-                        <button type="button" className={sysPre + 'btn-base'} onClick={this.loginHandle}>Login</button>
+                        <LoginFormComponent sysPre={sysPre} dispatch={dispatch} />
                     </div>
                 </div>
                 <div className="footer">©Noah System 2017</div>
