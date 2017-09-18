@@ -92,6 +92,17 @@ class NoahLayout extends React.Component {
         }, Config.times.loadingTime);
     }
 
+    componentDidMount() {
+        const { Config } = this.props;
+
+        // toggle page loading定时器.
+        clearTimeout(this.setTimeClear);
+        this.setTimeClear = setTimeout(() => {
+            clearTimeout(this.setTimeClear);
+            this.setState({initLoading: false});
+        }, Config.times.loadingTime);
+    }
+
     render() {
         const { selVal, menuDefOpenKeys, breadcrumb, Config } = this.props;
         const sysPre = Config.prefixs.system;
@@ -127,7 +138,7 @@ class NoahLayout extends React.Component {
                 }
                 <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
                     <div className="logo">{title}</div>
-                    <NoahSubMenu theme="dark" defaultSelectedKeys={[selVal]} mode="inline" defaultOpenKeys={[menuDefOpenKeys]} />
+                    <NoahSubMenu theme="dark" defaultSelectedKeys={[selVal]} selectedKeys={[selVal]} mode="inline" defaultOpenKeys={[menuDefOpenKeys]} />
                 </Sider>
                 <Layout>
                     <Header style={{ background: '#fff', padding: 0 }}>
