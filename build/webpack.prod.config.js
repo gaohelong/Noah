@@ -30,7 +30,7 @@ const extractCss = new ExtractTextPlugin({
 module.exports = { 
     /* entry */
     entry: {
-        main: ['./src/main.jsx'],
+        main: ['whatwg-fetch', './src/main.jsx'],
         vendor: [
             'react',
             'react-dom',
@@ -81,9 +81,7 @@ module.exports = {
                             // }
                         },
                         // {loader: 'postcss-loader'},
-                    ],
-                    // 在开发环境使用 style-loader
-                    fallback: "style-loader"
+                    ]
                 })
             },
 
@@ -100,9 +98,7 @@ module.exports = {
                         },
                         // {loader: "sass-loader"}
                         {loader: "sass-loader?sourceMap&includePaths[]=" + path.resolve(__dirname, "../node_modules/compass-mixins/lib")}
-                    ],
-                    // 在开发环境使用 style-loader
-                    fallback: "style-loader"
+                    ]
                 })
             },
 
@@ -151,7 +147,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: 'babel-loader'
+                use: [
+                    {loader: 'babel-loader'},
+                    {loader: 'eslint-loader'}
+                ]
             },
 
             // jsx.
@@ -160,7 +159,8 @@ module.exports = {
                 exclude: /^node_modules$/,
                 use: [
                     {loader: 'jsx-loader'},
-                    {loader: 'babel-loader'}
+                    {loader: 'babel-loader'},
+                    {loader: 'eslint-loader'}
                 ]
             }
         ]
@@ -168,6 +168,12 @@ module.exports = {
 
     /* 插件配置 */
     plugins: [
+        // source map(方便排查、定位javascript问题)
+        new webpack.SourceMapDevToolPlugin({
+            filename: 'map/[name].js.map', // 输出到map目录下
+            exclude: ['vendor.js'] // 排除vendor.js
+        }),
+
         // DefinePlugin.
         definePluginConfig,
 
