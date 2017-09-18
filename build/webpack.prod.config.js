@@ -17,6 +17,12 @@ const extractSass = new ExtractTextPlugin({
     // disable: process.env.NODE_ENV === "development" // true: 禁用，这是css在当前页面的<style></style>中. 如果为false: 启用，则单独生成css文件. 默认为false.
 });
 
+const extractCss = new ExtractTextPlugin({
+    // filename: "assets/css/[contenthash].css", // 输出到assets/css/目录下.
+    filename: "assets/css/[name].[contenthash].css", // 输出到assets/css/目录下.
+    // disable: process.env.NODE_ENV === "development" // true: 禁用，这是css在当前页面的<style></style>中. 如果为false: 启用，则单独生成css文件. 默认为false.
+});
+
 module.exports = { 
     /* entry */
     entry: {
@@ -49,6 +55,24 @@ module.exports = {
     /* loader */
     module: {
         rules: [
+            // css.
+            {
+                test: /\.css$/,
+                use: extractCss.extract({
+                    use: [
+                        {
+                            loader: 'css-loader?sourceMap',
+                            // options:{
+                            //     minimize: true // css压缩
+                            // }
+                        },
+                        // {loader: 'postcss-loader'},
+                    ],
+                    // 在开发环境使用 style-loader
+                    fallback: "style-loader"
+                })
+            },
+
             // sass.
             {
                 test: /\.scss$/,
@@ -142,6 +166,7 @@ module.exports = {
 
         // 提取成单独的css文件.
         extractSass,
+        extractCss,
 
         // 生成html.
         new HtmlWebpackPlugin({
