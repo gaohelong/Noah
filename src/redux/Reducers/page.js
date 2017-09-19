@@ -32,7 +32,8 @@ export const pageState = (state = initState, action) => {
                     key: action.data.key,
                     msg: action.data.msg,
                     curPage: action.data.curPage,
-                    type: 'success'
+                    type: 'success',
+                    delInfoTime: new Date().getTime()
                 }
             });
         case PAGE_EXP1_DEL_FAIL:
@@ -41,7 +42,8 @@ export const pageState = (state = initState, action) => {
                     key: action.data.key,
                     msg: action.data.msg,
                     curPage: action.data.curPage,
-                    type: 'fail'
+                    type: 'fail',
+                    delInfoTime: new Date().getTime()
                 }
             });
         case PAGE_EXP1_DETAIL_INFO:
