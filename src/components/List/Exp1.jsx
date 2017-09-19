@@ -198,6 +198,7 @@ class ListExp1 extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log('exp1-mstp', state);
     return {
         exp1List: state.pageState.exp1List,
         delInfo: state.pageState.delInfo
