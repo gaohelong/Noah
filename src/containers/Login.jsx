@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+/* antd */
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+const FormItem = Form.Item;
+
 /* moment */
 // import moment from 'moment';
 
@@ -15,8 +19,6 @@ import { connect } from 'react-redux';
 import { login } from '../redux/Actions/login';
 
 /* Login From */
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
-const FormItem = Form.Item;
 class LoginForm extends React.Component {
     loginHandle = (e) => {
         e.preventDefault();
@@ -70,9 +72,16 @@ class Login extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { history } = this.props;
 
+        // console.log(nextProps.failMsg);
+        if (nextProps.failMsg) {
+            message.error(nextProps.failMsg, 2);
+            return '';
+        }
+
         // console.log(nextProps, this.props);
         if (nextProps.userinfo.user) {
             history.push('/main');
+            return '';
         }
     }
 
@@ -96,7 +105,9 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        userinfo: state.loginState.userinfo
+        userinfo: state.loginState.userinfo,
+        failMsg: state.loginState.failMsg,
+        failMsgTime: state.loginState.failMsgTime
     };
 };
 

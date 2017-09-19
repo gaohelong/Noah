@@ -1,11 +1,7 @@
-import { LOGIN, LOGIN_REMEMBER_ME } from '../Actions/';
+import { LOGIN, LOGIN_FAIL, LOGIN_REMEMBER_ME } from '../Actions/';
 
 /* init state */
-const initState = {
-    token: '',
-    userinfo: {},
-    rememberMe: false
-};
+const initState = {};
 
 /* export function */
 export const loginState = (state = initState, action) => {
@@ -14,7 +10,14 @@ export const loginState = (state = initState, action) => {
             return Object.assign({}, state, {
                 token: action.data.token,
                 userinfo: action.data.userinfo,
-                rememberMe: !state.rememberMe
+                rememberMe: !state.rememberMe,
+                failMsg: '',
+                failMsgTime: 0
+            });
+        case LOGIN_FAIL:
+            return Object.assign({}, state, {
+                failMsg: action.data.msg,
+                failMsgTime: new Date().getTime()
             });
         default:
             return state;

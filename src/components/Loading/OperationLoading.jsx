@@ -23,7 +23,12 @@ class OperationLoading extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('OperationLoading Component');
+    console.group();
+    console.time();
+    console.log('OperationLoading Component:' + state.globalState.operationLoading);
+    console.timeEnd();
+    console.groupEnd();
+
     return {
         operationLoading: state.globalState.operationLoading
     };

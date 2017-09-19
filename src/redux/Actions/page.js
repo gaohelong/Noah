@@ -22,6 +22,10 @@ export const pageExp1List = (dispatch, url, data = {page: 1}) => {
                 return response.json();
             })
             .then((json) => {
+                console.group();
+                console.time();
+                console.log('page-async');
+
                 if (json.code === 0) {
                     dispatch({
                         type: PAGE_EXP1_LIST,
@@ -43,6 +47,9 @@ export const pageExp1List = (dispatch, url, data = {page: 1}) => {
                         }
                     });
                 }
+
+                console.timeEnd();
+                console.groupEnd();
             })
             .catch((error) => {
                 dispatch({

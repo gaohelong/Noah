@@ -104,6 +104,9 @@ class NoahLayout extends React.Component {
     }
 
     render() {
+        console.group();
+        console.time();
+
         const { selVal, menuDefOpenKeys, breadcrumb, Config } = this.props;
         const sysPre = Config.prefixs.system;
 
@@ -127,6 +130,8 @@ class NoahLayout extends React.Component {
         }
 
         console.log('Layout');
+        console.timeEnd();
+        console.groupEnd();
 
         return (
             <Layout>

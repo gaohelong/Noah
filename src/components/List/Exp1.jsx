@@ -79,7 +79,10 @@ class ListExp1 extends React.Component {
     }
 
     render() {
+        console.group();
+        console.time();
         console.log('ListExp1Component');
+
         const { Config } = this.props;
 
         // list.
@@ -179,6 +182,9 @@ class ListExp1 extends React.Component {
                 disabled: record.name === 'Disabled User'    // Column configuration not to be checked
             })
         };
+
+        console.timeEnd();
+        console.groupEnd();
 
         return (
             <div>

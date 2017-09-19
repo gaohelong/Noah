@@ -15,7 +15,11 @@ import 'antd/dist/antd.css';
 
 /* store */
 store.subscribe(() => { // 监听state变化.
+    console.group();
+    console.time();
     console.log('getStore:', store.getState());
+    console.timeEnd();
+    console.groupEnd();
 });
 
 /* render */
