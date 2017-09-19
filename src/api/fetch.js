@@ -5,7 +5,7 @@ const host = process.env.NODE_ENV === 'production' ? Config.fetchUrl.prod : Conf
 
 /* fetchGet: dev->fetchPost; prod->fetchGet. */
 export const fetchPOST = (url, data = {}) => {
-    data.token = 'token2017test';
+    data.token = Tools.getLocalStorageItem('token');
     url = Tools.url(host, url, data);
 
     return fetch(url, {

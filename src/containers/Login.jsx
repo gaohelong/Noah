@@ -79,7 +79,7 @@ class Login extends React.Component {
         }
 
         // console.log(nextProps, this.props);
-        if (nextProps.userinfo.user) {
+        if (nextProps.state) {
             history.push('/main');
             return '';
         }
@@ -105,7 +105,8 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        userinfo: state.loginState.userinfo,
+        state: state.loginState.state,
+        stateTime: state.loginState.stateTime,
         failMsg: state.loginState.failMsg,
         failMsgTime: state.loginState.failMsgTime
     };

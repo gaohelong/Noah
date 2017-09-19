@@ -9,9 +9,9 @@ const faker = require('faker');
 const login = {
     code: 0,
     msg: '登录成功.',
-    token: 'token20171244',
+    token: 'api-get:token20171244',
     userinfo: {
-        user: '龙Cloud',
+        name: 'Fate Saber',
         age: 20
     }
 };

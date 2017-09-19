@@ -17,11 +17,13 @@ export const globalState = (state = initState, action) => {
             });
         case TOKEN_VERIFY_SUCCESS:
             return Object.assign({}, state, {
-                token: true
+                token: true,
+                tokenTime: new Date().getTime()
             });
         case TOKEN_VERIFY_FAIL:
             return Object.assign({}, state, {
-                token: false
+                token: false,
+                tokenTime: new Date().getTime()
             });
         case GLOBAL_OPERATION_LOADING_OPEN:
             return Object.assign({}, state, {

@@ -1,4 +1,4 @@
-// fetch get url proc.
+/* fetch get url proc */
 export const url = (host, url, data) => {
     let resUrl = '';
 
@@ -20,4 +20,45 @@ const urlParamsProc = (data) => {
     }
 
     return res;
+};
+
+/* localStorage */
+export const getLocalStorageItem = (key) => {
+    if (!localStorage) {
+        return '';
+    }
+
+    return localStorage.getItem(key);
+};
+
+export const getLocalStorageObjItem = (key) => {
+    if (!localStorage) {
+        return '';
+    }
+
+    return JSON.parse(localStorage.getItem(key));
+};
+
+export const setLocalStorageItem = (key, val) => {
+    if (!localStorage) {
+        return '';
+    }
+
+    localStorage.setItem(key, val);
+};
+
+export const removeLocalStorageItem = (key) => {
+    if (!localStorage) {
+        return '';
+    }
+
+    localStorage.removeItem(key);
+};
+
+export const clearLocalStorage = () => {
+    if (!localStorage) {
+        return '';
+    }
+
+    localStorage.clear();
 };

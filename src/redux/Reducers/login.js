@@ -8,9 +8,8 @@ export const loginState = (state = initState, action) => {
     switch (action.type) {
         case LOGIN:
             return Object.assign({}, state, {
-                token: action.data.token,
-                userinfo: action.data.userinfo,
-                rememberMe: !state.rememberMe,
+                state: true,
+                stateTime: new Date().getTime(),
                 failMsg: '',
                 failMsgTime: 0
             });

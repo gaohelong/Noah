@@ -103,6 +103,10 @@ class NoahLayout extends React.Component {
         }, Config.times.loadingTime);
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.setTimeClear); // 解除Loading定时器.
+    }
+
     render() {
         console.group();
         console.time();
@@ -163,7 +167,8 @@ class NoahLayout extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        token: state.globalState.token
+        token: state.globalState.token,
+        tokenTime: state.globalState.tokenTime
     };
 };
 
