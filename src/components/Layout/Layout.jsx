@@ -71,6 +71,21 @@ class NoahLayout extends React.Component {
         });
     }
 
+    loadingClose = (nextProps) => {
+        const { Config } = this.props;
+        let loadingTime = Config.times.loadingTime;
+        if (nextProps.match.path === '/logout') {
+            loadingTime = Config.times.logoutLoadingTime;
+        }
+
+        // toggle page loading定时器.
+        clearTimeout(this.setTimeClear);
+        this.setTimeClear = setTimeout(() => {
+            clearTimeout(this.setTimeClear);
+            this.setState({initLoading: false});
+        }, loadingTime);
+    };
+
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps, this.props);
         const { Config } = this.props;
@@ -83,24 +98,11 @@ class NoahLayout extends React.Component {
 
         /* toggle page */
         this.setState({initLoading: true});
-
-        // toggle page loading定时器.
-        clearTimeout(this.setTimeClear);
-        this.setTimeClear = setTimeout(() => {
-            clearTimeout(this.setTimeClear);
-            this.setState({initLoading: false});
-        }, Config.times.loadingTime);
+        this.loadingClose(nextProps);
     }
 
     componentDidMount() {
-        const { Config } = this.props;
-
-        // toggle page loading定时器.
-        clearTimeout(this.setTimeClear);
-        this.setTimeClear = setTimeout(() => {
-            clearTimeout(this.setTimeClear);
-            this.setState({initLoading: false});
-        }, Config.times.loadingTime);
+        this.loadingClose(this.props);
     }
 
     componentWillUnmount() {
@@ -111,8 +113,11 @@ class NoahLayout extends React.Component {
         console.group();
         console.time();
 
-        const { selVal, menuDefOpenKeys, breadcrumb, Config } = this.props;
+        let { selVal, menuDefOpenKeys, breadcrumb, Config, match } = this.props;
         const sysPre = Config.prefixs.system;
+        if (menuDefOpenKeys === undefined) {
+            menuDefOpenKeys = 'list'; // 默认展开列表实例.
+        }
 
         // token verify loading.
         if (!this.props.token) {
@@ -133,6 +138,11 @@ class NoahLayout extends React.Component {
             title = 'N';
         }
 
+        let logoutCls = sysPre + 'fullScreenLoadingFadeout';
+        if (match.path === '/logout') {
+            logoutCls = sysPre + 'logoutFullScreenLoadingFadeout';
+        }
+
         console.log('Layout');
         console.timeEnd();
         console.groupEnd();
@@ -141,7 +151,7 @@ class NoahLayout extends React.Component {
             <Layout>
                 <OperationLoading Config={Config} />
                 {
-                    this.state.initLoading === true && <div className={sysPre + 'fullScreenLoadingFadeout'}>
+                    this.state.initLoading === true && <div className={logoutCls}>
                         <Spin size="large" className={sysPre + 'loadingCenter'} />
                     </div>
                 }

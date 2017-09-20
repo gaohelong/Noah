@@ -11,8 +11,11 @@ const Config = {
         dev: 'http://localhost:8002/tokenVerify'
     },
     times: {
-        loadingTime: 2000
-    }
+        loadingTime: 2000,
+        logoutLoadingTime: 600000,
+        msgAlertTime: 3
+    },
+    logoutPath: '/logout'
 };
 
 export default Config;

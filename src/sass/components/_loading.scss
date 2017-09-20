@@ -1,7 +1,9 @@
 @charset "utf-8";
 
 /* noah-loading */
-.#{$prefix}-fullScreenLoading, .#{$prefix}-fullScreenLoadingFadeout {
+.#{$prefix}-fullScreenLoading,
+.#{$prefix}-fullScreenLoadingFadeout,
+.#{$prefix}-logoutFullScreenLoadingFadeout {
     position:           absolute;
     top:                0;
     right:              0;
@@ -18,10 +20,19 @@
 }
 
 .#{$prefix}-fullScreenLoadingFadeout {
-    @include animation(loadingFadeout 0.7s ease 1.3s forwards); 
+    @include animation(loadingFadeout 0.7s ease 1.3s forwards);
 }
 
 @include keyframes(loadingFadeout) {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.#{$prefix}-logoutFullScreenLoadingFadeout {
+    @include animation(logoutLoadingFadeout 0.7s ease 600s forwards);
+}
+
+@include keyframes(logoutLoadingFadeout) {
     0% { opacity: 1; }
     100% { opacity: 0; }
 }

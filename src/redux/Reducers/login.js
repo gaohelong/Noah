@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_FAIL, LOGIN_REMEMBER_ME } from '../Actions/';
+import { LOGIN, LOGIN_FAIL, LOGIN_REMEMBER_ME, LOGOUT_SUCCESS, LOGOUT_FAIL } from '../Actions/';
 
 /* init state */
 const initState = {};
@@ -17,6 +17,18 @@ export const loginState = (state = initState, action) => {
             return Object.assign({}, state, {
                 failMsg: action.data.msg,
                 failMsgTime: new Date().getTime()
+            });
+        case LOGOUT_SUCCESS:
+            return Object.assign({}, state, {
+                logout: true,
+                logoutMsg: action.data.msg,
+                renderTime: new Date().getTime()
+            });
+        case LOGOUT_FAIL:
+            return Object.assign({}, state, {
+                logout: false,
+                logoutMsg: action.data.msg,
+                renderTime: new Date().getTime()
             });
         default:
             return state;
