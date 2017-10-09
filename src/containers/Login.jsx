@@ -45,6 +45,10 @@ class LoginForm extends React.Component {
                     {getFieldDecorator('username', {
                         rules: [{ required: true, message: '请输入用户名!' }]
                     })(
+                        // <div className="haha">
+                        //     <span>userName</span>
+                        //     <input type="text" className={inputCls} placeholder="Username" autoComplete="off" />
+                        // </div>
                         <input type="text" className={inputCls} placeholder="Username" autoComplete="off" />
                     )}
                 </FormItem>

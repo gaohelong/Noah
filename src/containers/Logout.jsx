@@ -18,7 +18,9 @@ class Logout extends React.Component {
         const msgAlertTime = Config.times.msgAlertTime;
         if (nextProps.logout === true) {
             message.success(nextProps.logoutMsg, msgAlertTime, () => {
-                history.push('/');
+                setTimeout(() => {
+                    history.push('/');
+                }, 1000);
             });
 
             return '';

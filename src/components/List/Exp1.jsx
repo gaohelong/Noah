@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table, Icon, Popconfirm, message } from 'antd';
 import { Map as immuMap, is as immuIs } from 'immutable';
+import { Table, Icon, Popconfirm, message, Button, Form } from 'antd';
+const FormItem = Form.Item;
 
 /* action */
 import { pageExp1List, pageExp1Del, pageDetailInfo } from '../../redux/Actions/page';
@@ -9,6 +10,42 @@ import { globalOperationLoadingOpen } from '../../redux/Actions/global';
 
 /* component */
 import DetailExp1 from '../Detail/Exp1';
+
+/* SearchFrom */
+class SearchForm extends React.Component {
+    // 查询.
+    searchHandle = (e) => {
+        e.preventDefault();
+        const { dispatch } = this.props;
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log(values.searchText);
+            }
+        });
+    }
+
+    render() {
+        const { getFieldDecorator, btnLarge } = this.props.form;
+        const { Config } = this.props;
+        const sysPre = Config.prefixs.system;
+
+        return (
+            <Form layout="inline" onSubmit={this.searchHandle}>
+                <FormItem>
+                    {getFieldDecorator('searchText', {
+                        // rules: [{ required: true, message: '请输入要查询的用户名!' }]
+                    })(
+                        <input type="text" className={sysPre + 'input-base'} placeholder="请输入要查询的用户名!" autoComplete="off" />
+                    )}
+                </FormItem>
+                <FormItem>
+                    <Button htmlType="submit" size={btnLarge}>查询</Button>
+                </FormItem>
+            </Form>
+        );
+    }
+}
+const SearchFormComponent = Form.create()(SearchForm);
 
 class ListExp1 extends React.Component {
     constructor(props) {
@@ -186,8 +223,20 @@ class ListExp1 extends React.Component {
         console.timeEnd();
         console.groupEnd();
 
+        const btnLarge = 'large';
+        const sysPre = Config.prefixs.system;
+
         return (
             <div>
+                <div className={sysPre + 'list-operation' + ' ' + sysPre + 'clearfix'}>
+                    <div className="opeartion-btn">
+                        <Button size={btnLarge}>添加</Button>
+                        <Button size={btnLarge}>批量删除</Button>
+                    </div>
+                    <div className="search-wrap">
+                        <SearchFormComponent Config={Config} btnLarge={btnLarge} />
+                    </div>
+                </div>
                 <DetailExp1 Config={Config} />
                 <Table columns={columns} dataSource={data} pagination={paginationConfig}
                     onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>}

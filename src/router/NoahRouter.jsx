@@ -60,6 +60,8 @@ const Main = (props) => {
 // };
 
 const ListExample1 = (props) => {
+    require('../sass/modules/list/exp1');
+
     return (
         <Bundle load={loadListExample1}>
             {(ListExample1) => <ListExample1 {...props} />}
