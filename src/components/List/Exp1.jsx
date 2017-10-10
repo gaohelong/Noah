@@ -10,6 +10,7 @@ import { globalOperationLoadingOpen } from '../../redux/Actions/global';
 
 /* component */
 import DetailExp1 from '../Detail/Exp1';
+import Exp1Add from './Exp1Add';
 
 /* SearchFrom */
 class SearchForm extends React.Component {
@@ -57,7 +58,8 @@ class ListExp1 extends React.Component {
 
         // state.
         this.state = {
-            selectedRowKeys: []
+            selectedRowKeys: [],
+            addVisible: false
         };
     }
 
@@ -113,6 +115,11 @@ class ListExp1 extends React.Component {
     handleShowDetail = (detailInfo) => {
         const { dispatch } = this.props;
         dispatch(pageDetailInfo(detailInfo));
+    }
+
+    // 添加.
+    addHandle = (val = false) => {
+        this.setState({addVisible: val});
     }
 
     render() {
@@ -230,7 +237,7 @@ class ListExp1 extends React.Component {
             <div>
                 <div className={sysPre + 'list-operation' + ' ' + sysPre + 'clearfix'}>
                     <div className="opeartion-btn">
-                        <Button size={btnLarge}>添加</Button>
+                        <Button size={btnLarge} onClick={() => this.addHandle(true)}>添加</Button>
                         <Button size={btnLarge}>批量删除</Button>
                     </div>
                     <div className="search-wrap">
@@ -238,6 +245,7 @@ class ListExp1 extends React.Component {
                     </div>
                 </div>
                 <DetailExp1 Config={Config} />
+                <Exp1Add Config={Config} addVisible={this.state.addVisible} addHandle={this.addHandle} />
                 <Table columns={columns} dataSource={data} pagination={paginationConfig}
                     onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>}
                     rowSelection={rowSelection} />
