@@ -103,11 +103,11 @@ class ListExp1 extends React.Component {
             const { dispatch } = this.props;
             this.setState({curPage: pagination.current});
             dispatch(globalOperationLoadingOpen());
-            dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current, ...searchObj}));
-
-            if (pagination.msg) {
-                message.success(pagination.msg);
-            }
+            dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current, ...searchObj}, (msg = pagination.msg) => {
+                if (msg) {
+                    message.success(msg, 2);
+                }
+            }));
         }, delay);
     }
 

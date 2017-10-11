@@ -17,7 +17,7 @@ export const PAGE_EXP1_DETAIL_INFO_EMPTY = 'PAGE_EXP1_DETAIL_INFO_EMPTY';
 export const PAGE_EXP1_ADD_SAVE = 'PAGE_EXP1_ADD_SAVE';
 
 // 获取列表.
-export const pageExp1List = (dispatch, url, data = {page: 1}) => {
+export const pageExp1List = (dispatch, url, data = {page: 1}, callback) => {
     return () => {
         fetchPOST(url, data)
             .then((response) => {
@@ -41,6 +41,10 @@ export const pageExp1List = (dispatch, url, data = {page: 1}) => {
                     dispatch({
                         type: GLOBAL_OPERATION_LOADING_CLOSE
                     });
+
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
                 } else {
                     dispatch({
                         type: FETCH_REQUIRE_NO_DATA,
@@ -129,10 +133,9 @@ export const exp1AddSave = (dispatch, url, data = {}) => {
                             msg: json.msg
                         }
                     });
-
-                    dispatch({
-                        type: GLOBAL_OPERATION_LOADING_CLOSE
-                    });
+                    // dispatch({
+                    //     type: GLOBAL_OPERATION_LOADING_CLOSE
+                    // });
                 } else {
                     dispatch({
                         type: FETCH_REQUIRE_NO_DATA,
