@@ -65,6 +65,7 @@ class ListExp1 extends React.Component {
         // state.
         this.state = {
             selectedRowKeys: [],
+            expandedRowKeys: [],
             addVisible: false,
             curPage: 0
         };
@@ -95,7 +96,7 @@ class ListExp1 extends React.Component {
 
     // 分页.
     handleTableChange(pagination, filters, sorter) {
-        this.setState({selectedRowKeys: []});
+        this.setState({selectedRowKeys: [], expandedRowKeys: []});
         const delay = pagination.delay ? pagination.delay : 0;
 
         setTimeout(() => {
@@ -163,10 +164,32 @@ class ListExp1 extends React.Component {
         console.log('cWU:', searchObj);
     }
 
+    // 折叠.
+    expandHandle = (expanded, record) => {
+        if (expanded) {
+            this.setState((preState) => ({
+                expandedRowKeys: preState.expandedRowKeys.concat([record.key])
+            }));
+        } else {
+            this.setState((preState) => {
+                let arr = preState.expandedRowKeys;
+                let keyIndex = arr.indexOf(record.key);
+                if (keyIndex > -1) {
+                    arr.splice(keyIndex, 1);
+                }
+
+                return {
+                    expandedRowKeys: arr
+                };
+            });
+        }
+    };
+
     render() {
         console.group();
         console.time();
         console.log('ListExp1Component');
+        console.log('state.expandedRowKeys:', this.state.expandedRowKeys);
 
         const { Config } = this.props;
 
@@ -310,8 +333,8 @@ class ListExp1 extends React.Component {
                 <DetailExp1 Config={Config} />
                 <Exp1Add Config={Config} addVisible={this.state.addVisible} addHandle={this.addHandle} operationCallbackHandle={this.operationCallbackHandle} />
                 <Table columns={columns} dataSource={data} pagination={paginationConfig}
-                    onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>}
-                    rowSelection={rowSelection} />
+                    onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>} expandedRowKeys={this.state.expandedRowKeys}
+                    onExpand={this.expandHandle} rowSelection={rowSelection} />
             </div>
         );
     }
