@@ -107,8 +107,7 @@ class Exp1Add extends React.Component {
         console.log('Exp1Add Receive:', nextProps.renderTime, this.props.renderTime);
         if (nextProps.renderTime !== this.props.renderTime) {
             this.handleCancel();
-            message.success(nextProps.addMsg, 2);
-            this.props.operationCallbackHandle('add');
+            this.props.operationCallbackHandle('add', nextProps.addMsg);
             return '';
         }
     }

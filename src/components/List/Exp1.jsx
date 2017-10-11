@@ -104,6 +104,10 @@ class ListExp1 extends React.Component {
             this.setState({curPage: pagination.current});
             dispatch(globalOperationLoadingOpen());
             dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current, ...searchObj}));
+
+            if (pagination.msg) {
+                message.success(pagination.msg);
+            }
         }, delay);
     }
 
@@ -135,14 +139,14 @@ class ListExp1 extends React.Component {
     }
 
     // 操作回调.
-    operationCallbackHandle = (type) => {
+    operationCallbackHandle = (type, msg) => {
         const delay = 800;
         switch (type) {
             case 'add':
-                this.handleTableChange({current: 1, delay: delay});
+                this.handleTableChange({current: 1, delay: delay, msg: msg});
                 break;
             case 'edit':
-                this.handleTableChange({current: this.props.exp1List.curPage, delay: delay});
+                this.handleTableChange({current: this.props.exp1List.curPage, delay: delay, msg: msg});
                 break;
         }
     }
