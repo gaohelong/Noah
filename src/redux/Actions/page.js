@@ -14,6 +14,8 @@ export const PAGE_EXP1_DEL_FAIL = 'PAGE_EXP1_DEL_FAIL';
 export const PAGE_EXP1_DETAIL_INFO = 'PAGE_EXP1_DETAIL_INFO';
 export const PAGE_EXP1_DETAIL_INFO_EMPTY = 'PAGE_EXP1_DETAIL_INFO_EMPTY';
 
+export const PAGE_EXP1_ADD_SAVE = 'PAGE_EXP1_ADD_SAVE';
+
 // 获取列表.
 export const pageExp1List = (dispatch, url, data = {page: 1}) => {
     return () => {
@@ -111,5 +113,42 @@ export const pageDetailInfo = (detailInfo) => {
 export const pageDetailInfoEmpty = () => {
     return {
         type: PAGE_EXP1_DETAIL_INFO_EMPTY
+    };
+};
+
+// 添加保存.
+export const exp1AddSave = (dispatch, url, data = {}) => {
+    return () => {
+        fetchPOST(url, data)
+            .then(response => response.json())
+            .then(json => {
+                if (json.code === 0) {
+                    dispatch({
+                        type: PAGE_EXP1_ADD_SAVE,
+                        data: {
+                            msg: json.msg
+                        }
+                    });
+
+                    dispatch({
+                        type: GLOBAL_OPERATION_LOADING_CLOSE
+                    });
+                } else {
+                    dispatch({
+                        type: FETCH_REQUIRE_NO_DATA,
+                        data: {
+                            msg: json.msg
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                dispatch({
+                    type: FETCH_REQUIRE_FAIL,
+                    data: {
+                        msg: 'parsing failed:' + error
+                    }
+                });
+            });
     };
 };

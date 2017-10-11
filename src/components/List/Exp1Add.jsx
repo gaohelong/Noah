@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Form, Input, Button } from 'antd';
+import { Modal, Form, Input, Button, message } from 'antd';
 const FormItem = Form.Item;
 
 /* action */
+import { exp1AddSave } from '../../redux/Actions/page';
 import { globalOperationLoadingOpen } from '../../redux/Actions/global';
 
 /* Exp1AddForm */
@@ -13,12 +14,13 @@ class Exp1AddForm extends React.Component {
         const { dispatch } = this.props;
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                // console.log('Received values of form: ', values);
                 dispatch(globalOperationLoadingOpen());
-                // dispatch(login(dispatch, '/login', {
-                //     user: values.username,
-                //     pwd: values.password
-                // }));
+
+                // 设置延迟提交.
+                setTimeout(() => {
+                    dispatch(exp1AddSave(dispatch, '/exp1AddSave', values));
+                }, 2000);
             }
         });
     };
@@ -101,6 +103,16 @@ class Exp1Add extends React.Component {
         this.props.addHandle(false);
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log('Exp1Add Receive:', nextProps.renderTime, this.props.renderTime);
+        if (nextProps.renderTime !== this.props.renderTime) {
+            this.handleCancel();
+            message.success(nextProps.addMsg, 2);
+            this.props.operationCallbackHandle('add');
+            return '';
+        }
+    }
+
     render() {
         const { Config, dispatch } = this.props;
         const sysPre = Config.prefixs.system;
@@ -133,7 +145,10 @@ class Exp1Add extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {};
+    return {
+        renderTime: state.pageState.renderTime,
+        addMsg: state.pageState.addMsg
+    };
 };
 
 export default connect(mapStateToProps)(Exp1Add);

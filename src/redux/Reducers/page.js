@@ -1,5 +1,6 @@
 import {
-    PAGE_EXP1_LIST, PAGE_EXP1_DEL_SUCCESS, PAGE_EXP1_DEL_FAIL, PAGE_EXP1_DETAIL_INFO, PAGE_EXP1_DETAIL_INFO_EMPTY
+    PAGE_EXP1_LIST, PAGE_EXP1_DEL_SUCCESS, PAGE_EXP1_DEL_FAIL, PAGE_EXP1_DETAIL_INFO, PAGE_EXP1_DETAIL_INFO_EMPTY,
+    PAGE_EXP1_ADD_SAVE
 } from '../Actions/page';
 
 const initState = {};
@@ -53,6 +54,11 @@ export const pageState = (state = initState, action) => {
         case PAGE_EXP1_DETAIL_INFO_EMPTY:
             return Object.assign({}, state, {
                 detailInfo: {}
+            });
+        case PAGE_EXP1_ADD_SAVE:
+            return Object.assign({}, state, {
+                addMsg: action.data.msg,
+                renderTime: new Date().getTime()
             });
         default:
             return state;

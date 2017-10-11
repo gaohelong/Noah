@@ -59,7 +59,8 @@ class ListExp1 extends React.Component {
         // state.
         this.state = {
             selectedRowKeys: [],
-            addVisible: false
+            addVisible: false,
+            curPage: 0
         };
     }
 
@@ -88,11 +89,15 @@ class ListExp1 extends React.Component {
     // 分页.
     handleTableChange(pagination, filters, sorter) {
         this.setState({selectedRowKeys: []});
+        const delay = pagination.delay ? pagination.delay : 0;
 
-        // console.log(pagination, filters, sorter);
-        const { dispatch } = this.props;
-        dispatch(globalOperationLoadingOpen());
-        dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current}));
+        setTimeout(() => {
+            // console.log(pagination, filters, sorter);
+            const { dispatch } = this.props;
+            this.setState({curPage: pagination.current});
+            dispatch(globalOperationLoadingOpen());
+            dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current}));
+        }, delay);
     }
 
     // 删除.
@@ -120,6 +125,19 @@ class ListExp1 extends React.Component {
     // 添加.
     addHandle = (val = false) => {
         this.setState({addVisible: val});
+    }
+
+    // 操作回调.
+    operationCallbackHandle = (type) => {
+        const delay = 800;
+        switch (type) {
+            case 'add':
+                this.handleTableChange({current: 1, delay: delay});
+                break;
+            case 'edit':
+                this.handleTableChange({current: this.props.exp1List.curPage, delay: delay});
+                break;
+        }
     }
 
     render() {
@@ -197,13 +215,18 @@ class ListExp1 extends React.Component {
             }
         ];
 
-        const paginationConfig = {
+        let paginationConfig = {
             pageSize: pageSize,
             showQuickJumper: true,
             defaultCurrent: 1,
             total: total,
-            showTotal: (total, range) => (`${range[0]} - ${range[1]} of ${total} items`)
+            showTotal: (total, range) => (`pageSize: ${pageSize} | ${range[0]} - ${range[1]} of ${total} items`)
         };
+
+        console.log('page:', this.state.curPage);
+        if (this.state.curPage > 0) {
+            paginationConfig.current = this.state.curPage;
+        }
 
         // 全选、单选配置.
         const { selectedRowKeys } = this.state;
@@ -245,7 +268,7 @@ class ListExp1 extends React.Component {
                     </div>
                 </div>
                 <DetailExp1 Config={Config} />
-                <Exp1Add Config={Config} addVisible={this.state.addVisible} addHandle={this.addHandle} />
+                <Exp1Add Config={Config} addVisible={this.state.addVisible} addHandle={this.addHandle} operationCallbackHandle={this.operationCallbackHandle} />
                 <Table columns={columns} dataSource={data} pagination={paginationConfig}
                     onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>}
                     rowSelection={rowSelection} />
