@@ -12,6 +12,9 @@ import { globalOperationLoadingOpen } from '../../redux/Actions/global';
 import DetailExp1 from '../Detail/Exp1';
 import Exp1Add from './Exp1Add';
 
+/* search condition */
+let searchObj = {};
+
 /* SearchFrom */
 class SearchForm extends React.Component {
     // 查询.
@@ -20,7 +23,10 @@ class SearchForm extends React.Component {
         const { dispatch } = this.props;
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                searchObj = Object.assign({}, searchObj, values);
+                console.log(searchObj);
                 console.log(values.searchText);
+                this.props.searchCallbackHandle();
             }
         });
     }
@@ -68,6 +74,7 @@ class ListExp1 extends React.Component {
         const { dispatch } = this.props;
         dispatch(globalOperationLoadingOpen());
         dispatch(pageExp1List(dispatch, '/pageExp1List'));
+        console.log('cDM:', searchObj);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -96,7 +103,7 @@ class ListExp1 extends React.Component {
             const { dispatch } = this.props;
             this.setState({curPage: pagination.current});
             dispatch(globalOperationLoadingOpen());
-            dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current}));
+            dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current, ...searchObj}));
         }, delay);
     }
 
@@ -138,6 +145,18 @@ class ListExp1 extends React.Component {
                 this.handleTableChange({current: this.props.exp1List.curPage, delay: delay});
                 break;
         }
+    }
+
+    // 查询回调.
+    searchCallbackHandle = () => {
+        this.handleTableChange({current: 1});
+    };
+
+    componentWillUnmount() {
+        // data reset.
+        console.log('cWU:', searchObj);
+        searchObj = {};
+        console.log('cWU:', searchObj);
     }
 
     render() {
@@ -264,7 +283,7 @@ class ListExp1 extends React.Component {
                         <Button size={btnLarge}>批量删除</Button>
                     </div>
                     <div className="search-wrap">
-                        <SearchFormComponent Config={Config} btnLarge={btnLarge} />
+                        <SearchFormComponent Config={Config} btnLarge={btnLarge} searchCallbackHandle={this.searchCallbackHandle} />
                     </div>
                 </div>
                 <DetailExp1 Config={Config} />
