@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Map as immuMap, is as immuIs } from 'immutable';
-import { Table, Icon, Popconfirm, message, Button, Form } from 'antd';
+import { Table, Icon, Popconfirm, message, Button, Form, Tooltip } from 'antd';
 const FormItem = Form.Item;
 
 /* action */
@@ -181,6 +181,7 @@ class ListExp1 extends React.Component {
             total = exp1List.total;
         }
 
+        const mouseEnterDelay = 0.2;
         const columns = [
             {
                 title: 'id',
@@ -193,19 +194,35 @@ class ListExp1 extends React.Component {
                 key: 'name',
                 render: (text, record) => {
                     return (
-                        <a onClick={() => this.handleShowDetail(record)}>{text}</a>
+                        <Tooltip placement="top" title={'我的英文名字是：' + text} mouseEnterDelay={mouseEnterDelay}>
+                            <a onClick={() => this.handleShowDetail(record)}>{text}</a>
+                        </Tooltip>
                     );
                 }
             },
             {
                 title: '年龄',
                 dataIndex: 'age',
-                key: 'age'
+                key: 'age',
+                render: (text, record) => {
+                    return (
+                        <Tooltip placement="left" title={'我的年龄是:' + text}>
+                            <a>{text}</a>
+                        </Tooltip>
+                    );
+                }
             },
             {
                 title: '地址',
                 dataIndex: 'address',
-                key: 'address'
+                key: 'address',
+                render: (text, record) => {
+                    return (
+                        <Tooltip placement="bottom" title={'我的家庭住址是: ' + text} mouseEnterDelay={mouseEnterDelay}>
+                            <a>{text}</a>
+                        </Tooltip>
+                    );
+                }
             },
             {
                 title: '日期',
