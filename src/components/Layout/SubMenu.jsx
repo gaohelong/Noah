@@ -21,6 +21,14 @@ class NoahSubMenu extends React.Component {
             ]
         },
         {
+            key: 'custom',
+            icon: 'windows',
+            title: '自定义',
+            sub: [
+                {to: '/custom/collapse', icon: 'wifi', title: '折叠面板'}
+            ]
+        },
+        {
             to: '/logout',
             icon: 'logout',
             title: '退出'

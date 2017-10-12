@@ -24,6 +24,7 @@ import loadListExample1 from 'bundle-loader?lazy!../containers/List/Example1';
 import loadListExample2 from 'bundle-loader?lazy!../containers/List/Example2';
 import loadLogout from 'bundle-loader?lazy!../containers/Logout';
 import loadF404 from 'bundle-loader?lazy!../containers/404/404';
+import loadCollapse from 'bundle-loader?lazy!../containers/Custom/Collapse';
 
 /* layout */
 import Layout from '../components/Layout/Layout';
@@ -73,6 +74,14 @@ const ListExample2 = (props) => {
     return (
         <Bundle load={loadListExample2}>
             {(ListExample2) => <ListExample2 {...props} />}
+        </Bundle>
+    );
+};
+
+const Collapse = (props) => {
+    return (
+        <Bundle load={loadCollapse}>
+            {(Collapse) => <Collapse {...props} />}
         </Bundle>
     );
 };
@@ -138,6 +147,17 @@ const routerConfig = [
             selVal: '2',
             breadcrumb: '列表实例~main|列表实例1~list/exp1',
             menuDefOpenKeys: 'list'
+        }
+    },
+    {
+        exact: true,
+        path: '/custom/collapse',
+        component: Collapse,
+        type: 2,
+        toProps: {
+            selVal: '4',
+            breadcrumb: '自定义~main|折叠面板~custom/collapse',
+            menuDefOpenKeys: 'custom'
         }
     },
     {
