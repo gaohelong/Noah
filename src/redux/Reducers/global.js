@@ -1,6 +1,6 @@
 import {
     PAGE_LOADING, PAGE_LOAD_SUCCESS, TOKEN_VERIFY_SUCCESS, TOKEN_VERIFY_FAIL,
-    GLOBAL_OPERATION_LOADING_OPEN, GLOBAL_OPERATION_LOADING_CLOSE
+    GLOBAL_OPERATION_LOADING_OPEN, GLOBAL_OPERATION_LOADING_CLOSE, FETCH_REQUIRE_NO_DATA
 } from '../Actions/global';
 
 const initState = {};
@@ -32,6 +32,13 @@ export const globalState = (state = initState, action) => {
         case GLOBAL_OPERATION_LOADING_CLOSE:
             return Object.assign({}, state, {
                 operationLoading: false
+            });
+        case FETCH_REQUIRE_NO_DATA:
+            return Object.assign({}, state, {
+                fetchNoData: {
+                    msg: action.data.msg,
+                    renderTime: new Date().getTime()
+                }
             });
         default:
             return state;

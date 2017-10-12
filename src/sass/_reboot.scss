@@ -92,4 +92,27 @@ body {
     .ant-form-item { margin-bottom: 0; }
     .has-error .ant-form-explain, .has-error .ant-form-split { margin-top: 10px; }
     .noah-add-row-base .has-error .ant-form-explain, .has-error .ant-form-split { margin-top: 6px; }
+
+    .ant-pagination-item { border: 0; }
+    .ant-pagination-item:focus a { color: rgba(0, 0, 0, 0.65); }
+    .ant-pagination-item a {
+        display:            block;
+        height:             28px;
+        line-height:        28px;
+        margin:             0;
+        border:             1px solid #d9d9d9;
+        @include            border-radius(4px);
+
+    }
+    .ant-pagination-item a:hover {
+        border:             1px solid #108ee9;
+        color:              #108ee9;
+    }
+    .ant-pagination-item-active a,
+    .ant-pagination-item-active:focus a,
+    .ant-pagination-item-active:hover a {
+        color:              #fff;
+        border:             1px solid #108ee9;
+        background-color:   #108ee9;
+    }
 }

@@ -37,14 +37,6 @@ export const pageExp1List = (dispatch, url, data = {page: 1}, callback) => {
                             curPage: data.page
                         }
                     });
-
-                    dispatch({
-                        type: GLOBAL_OPERATION_LOADING_CLOSE
-                    });
-
-                    if (typeof callback === 'function') {
-                        callback();
-                    }
                 } else {
                     dispatch({
                         type: FETCH_REQUIRE_NO_DATA,
@@ -52,6 +44,14 @@ export const pageExp1List = (dispatch, url, data = {page: 1}, callback) => {
                             msg: json.msg
                         }
                     });
+                }
+
+                dispatch({
+                    type: GLOBAL_OPERATION_LOADING_CLOSE
+                });
+
+                if (typeof callback === 'function') {
+                    callback();
                 }
 
                 console.timeEnd();

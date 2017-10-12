@@ -67,7 +67,8 @@ class ListExp1 extends React.Component {
             selectedRowKeys: [],
             expandedRowKeys: [],
             addVisible: false,
-            curPage: 0
+            curPage: 0,
+            tableEmptyText: '数据加载中…'
         };
     }
 
@@ -91,25 +92,36 @@ class ListExp1 extends React.Component {
             } else if (delInfo.type === 'fail') {
                 message.error(delInfo.msg, 3);
             }
+
+            return '';
+        }
+
+        // 无匹配数据.
+        let { fetchNoData } = this.props;
+        let fetchNoDataCompRes = immuIs(immuMap(prevProps.fetchNoData), immuMap(fetchNoData));
+        if (fetchNoData && !fetchNoDataCompRes) {
+            let curPage = 1;
+            if (prevProps.exp1List !== undefined) {
+                curPage = prevProps.exp1List.curPage;
+            }
+            this.setState({curPage: curPage, tableEmptyText: '暂无匹配的数据!'});
+            message.error(fetchNoData.msg, 2);
+            return '';
         }
     }
 
     // 分页.
     handleTableChange(pagination, filters, sorter) {
         this.setState({selectedRowKeys: [], expandedRowKeys: []});
-        const delay = pagination.delay ? pagination.delay : 0;
-
-        setTimeout(() => {
-            // console.log(pagination, filters, sorter);
-            const { dispatch } = this.props;
-            this.setState({curPage: pagination.current});
-            dispatch(globalOperationLoadingOpen());
-            dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current, ...searchObj}, (msg = pagination.msg) => {
-                if (msg) {
-                    message.success(msg, 2);
-                }
-            }));
-        }, delay);
+        // console.log(pagination, filters, sorter);
+        const { dispatch } = this.props;
+        this.setState({curPage: pagination.current});
+        dispatch(globalOperationLoadingOpen());
+        dispatch(pageExp1List(dispatch, '/pageExp1List', {page: pagination.current, ...searchObj}, (msg = pagination.msg) => {
+            if (msg) {
+                message.success(msg, 2);
+            }
+        }));
     }
 
     // 删除.
@@ -144,10 +156,10 @@ class ListExp1 extends React.Component {
         const delay = 800;
         switch (type) {
             case 'add':
-                this.handleTableChange({current: 1, delay: delay, msg: msg});
+                this.handleTableChange({current: 1, msg: msg});
                 break;
             case 'edit':
-                this.handleTableChange({current: this.props.exp1List.curPage, delay: delay, msg: msg});
+                this.handleTableChange({current: this.props.exp1List.curPage, msg: msg});
                 break;
         }
     }
@@ -245,7 +257,7 @@ class ListExp1 extends React.Component {
                 key: 'address',
                 render: (text, record) => {
                     return (
-                        <Tooltip placement="bottom" title={'我的家庭住址是: ' + text} mouseEnterDelay={mouseEnterDelay}>
+                        <Tooltip placement="bottom" title={'我的家庭住址是: ' + text} mouseEnterDelay={mouseEnterDelay} overlayStyle={{maxWidth: '400px'}}>
                             <a>{text}</a>
                         </Tooltip>
                     );
@@ -283,7 +295,7 @@ class ListExp1 extends React.Component {
             showQuickJumper: true,
             defaultCurrent: 1,
             total: total,
-            showTotal: (total, range) => (`pageSize: ${pageSize} | ${range[0]} - ${range[1]} of ${total} items`)
+            showTotal: (total, range) => (`每页: ${pageSize}条 | 当前是第：${range[1] / pageSize} 页 | 当前记录为:${range[0]} - ${range[1]} | 共：${total} 条`)
         };
 
         console.log('page:', this.state.curPage);
@@ -334,7 +346,7 @@ class ListExp1 extends React.Component {
                 <Exp1Add Config={Config} addVisible={this.state.addVisible} addHandle={this.addHandle} operationCallbackHandle={this.operationCallbackHandle} />
                 <Table columns={columns} dataSource={data} pagination={paginationConfig}
                     onChange={this.handleTableChange} expandedRowRender={record => <p>{record.desc}</p>} expandedRowKeys={this.state.expandedRowKeys}
-                    onExpand={this.expandHandle} rowSelection={rowSelection} />
+                    onExpand={this.expandHandle} rowSelection={rowSelection} locale={{emptyText: this.state.tableEmptyText}} />
             </div>
         );
     }
@@ -344,7 +356,8 @@ const mapStateToProps = (state) => {
     console.log('exp1-mstp', state);
     return {
         exp1List: state.pageState.exp1List,
-        delInfo: state.pageState.delInfo
+        delInfo: state.pageState.delInfo,
+        fetchNoData: state.globalState.fetchNoData
     };
 };
 

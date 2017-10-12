@@ -1,5 +1,5 @@
-export const FETCH_REQUIRE_NO_DATA = 'FETCH_REQUIRE_NO_DATA';
-export const FETCH_REQUIRE_FAIL = 'FETCH_REQUIRE_FAIL';
+export const FETCH_REQUIRE_NO_DATA = 'FETCH_REQUIRE_NO_DATA'; // 无匹配的数据.
+export const FETCH_REQUIRE_FAIL = 'FETCH_REQUIRE_FAIL'; // 获取失败.
 
 /* 分页 */
 export const PAGE_LOADING = 'PAGE_LOADING';
